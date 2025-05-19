@@ -16,8 +16,27 @@ builder.Services.AddScoped<IImageRepository, ImageRepository>();
 builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddControllers();
 
+if (File.Exists("../env"))
+{
+    foreach (var line in File.ReadAllLines("../env"))
+    {
+        if (string.IsNullOrWhiteSpace(line) || line.TrimStart().StartsWith("#"))
+            continue;
+
+        var parts = line.Split("=");
+        if (parts.Length == 2)
+        {
+            Environment.SetEnvironmentVariable(parts[0].Trim(), parts[1].Trim());
+        }
+    }
+}
+
+string username = Environment.GetEnvironmentVariable("POSTGRES_USER") ?? "";
+string password = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD") ?? "";
+string database = Environment.GetEnvironmentVariable("POSTGRES_DATABASE") ?? "";
+
 builder.Services.AddDbContext<ImageContext>(options =>
-    options.UseNpgsql("Host=localhost;Database=postgres;Username=postgres;Password=postgres"));
+    options.UseNpgsql($"Host=localhost;Database={database};Username={username};Password={password}"));
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
