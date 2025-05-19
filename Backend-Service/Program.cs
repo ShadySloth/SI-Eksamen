@@ -26,6 +26,10 @@ if (File.Exists("../.env"))
         var parts = line.Split("=");
         if (parts.Length == 2)
         {
+            if (parts[0].Contains("POSTGRES_HOST"))
+            {
+                continue;
+            }
             Environment.SetEnvironmentVariable(parts[0].Trim(), parts[1].Trim());
         }
     }
@@ -34,9 +38,10 @@ if (File.Exists("../.env"))
 string username = Environment.GetEnvironmentVariable("POSTGRES_USER") ?? "";
 string password = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD") ?? "";
 string database = Environment.GetEnvironmentVariable("POSTGRES_DATABASE") ?? "";
+string dbHost = Environment.GetEnvironmentVariable("POSTGRES_HOST") ?? "localhost";
 
 builder.Services.AddDbContext<ImageContext>(options =>
-    options.UseNpgsql($"Host=localhost;Database={database};Username={username};Password={password}"));
+    options.UseNpgsql($"Host={dbHost};Database={database};Username={username};Password={password}"));
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
