@@ -9,7 +9,7 @@ public interface IImageService
     /**
      * Gets an image by id.
      */
-    Task<ImageDto> GetImageAsync(Guid imageId);
+    Task<ImageDto> GetImage(Guid imageId);
     
     /**
      * Uploads an image.

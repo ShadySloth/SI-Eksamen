@@ -17,9 +17,14 @@ public class ImageService : IImageService
         _imageRepository = imageRepository;
     }
 
-    public Task<ImageDto> GetImageAsync(Guid imageId)
+    public async Task<ImageDto> GetImage(Guid imageId)
     {
-        throw new NotImplementedException();
+        var image = await _imageRepository.GetImage(imageId);
+        var imageDto = _mapper.Map<ImageDto>(image);
+
+        imageDto.FileBase64 = GetFile(imageDto.FileName);
+        
+        return imageDto;
     }
 
     public async Task<ImageDto> UploadImage(IFormFile file)
@@ -37,7 +42,7 @@ public class ImageService : IImageService
         var createdImage = await _imageRepository.UploadImage(image);
 
         var imageDto = _mapper.Map<ImageDto>(createdImage);
-        imageDto.File = file;
+        imageDto.FileBase64 = GetFile(imageDto.FileName);
         return imageDto;
     }
 
@@ -68,5 +73,19 @@ public class ImageService : IImageService
         var extension = Path.GetExtension(file.FileName);
         if (!allowedExtensions.Contains(extension))
             throw new Exception("File type is not allowed");
+    }
+
+    private static string GetFile(string fileName)
+    {
+        var root = Directory.GetCurrentDirectory();
+        var path = Path.Combine(root, "Images", fileName);
+        
+        if (!File.Exists(path))
+            throw new Exception("File not found");
+
+        using var stream = new FileStream(path, FileMode.Open);
+        using var memoryStream = new MemoryStream();
+        stream.CopyTo(memoryStream);
+        return Convert.ToBase64String(memoryStream.ToArray());
     }
 }

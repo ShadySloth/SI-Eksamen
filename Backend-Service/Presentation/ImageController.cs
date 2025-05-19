@@ -21,7 +21,7 @@ public class ImageController : ControllerBase
     [HttpGet("{imageId}")]
     public async Task<ActionResult<ImageDto>> GetImageAsync(Guid imageId)
     {
-        var image = await _imageService.GetImageAsync(imageId);
+        var image = await _imageService.GetImage(imageId);
         return image;
     }
     

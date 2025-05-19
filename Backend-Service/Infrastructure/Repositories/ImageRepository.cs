@@ -16,7 +16,11 @@ public class ImageRepository : IImageRepository
 
     public Task<Image> GetImage(Guid imageId)
     {
-        throw new NotImplementedException();
+        var image = _context.Images
+            .Select(i => i)
+            .Where(i => i.Id == imageId)
+            .FirstOrDefaultAsync();
+        return image!;
     }
 
     public async Task<Image> UploadImage(Image image)

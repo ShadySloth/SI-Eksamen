@@ -4,5 +4,5 @@ public class ImageDto
 {
     public Guid Id { get; set; }
     public required string FileName { get; set; }
-    public required IFormFile File { get; set; }
+    public string? FileBase64 { get; set; }
 }
