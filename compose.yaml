@@ -1,7 +1,32 @@
-﻿services:
-  backend-service:
-    image: backend-service
-    build:
-      context: .
-      dockerfile: Backend-Service/Dockerfile
+﻿version: "3.9"
 
+services:
+  mariadb:
+    image: mariadb:11.3
+    container_name: ai_service_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - mariadb_data_map:/var/lib/mysql
+      - ./mariadb-init:/docker-entrypoint-initdb.d
+    network_mode: "host"  # <-- Her
+
+  ai-backend-service:
+    container_name: ai_service_backend
+    build:
+      context: ./Backend-Service-Model-Trainer
+      dockerfile: Dockerfile
+    environment:
+      AI_DATABASE_URL: ${AI_DATABASE_URL}
+    depends_on:
+      - mariadb
+    volumes:
+      - ./Backend-Service-Model-Trainer:/app
+    restart: always
+
+volumes:
+  mariadb_data_map:
