@@ -26,7 +26,7 @@ public class ImageController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<ImageDto[]>> GetImages(int page = 1, int pageSize = 20)
+    public async Task<ActionResult<ImageDto[]>> GetImages(int page = 1, int pageSize = 10)
     {
         var images = await _imageService.GetImages(page, pageSize);
         return Ok(images);
