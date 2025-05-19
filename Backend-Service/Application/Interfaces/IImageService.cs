@@ -10,6 +10,11 @@ public interface IImageService
      * Gets an image by id.
      */
     Task<ImageDto> GetImage(Guid imageId);
+
+    /**
+     * Gets paginated images.
+     */
+    Task<ImageDto[]> GetImages(int page, int pageSize);
     
     /**
      * Uploads an image.

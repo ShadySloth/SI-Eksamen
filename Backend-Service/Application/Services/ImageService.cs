@@ -27,6 +27,19 @@ public class ImageService : IImageService
         return imageDto;
     }
 
+    public async Task<ImageDto[]> GetImages(int page, int pageSize)
+    {
+        var images = await _imageRepository.GetImages(page, pageSize);
+        var imageDtos = _mapper.Map<ImageDto[]>(images);
+        
+        foreach (var imageDto in imageDtos)
+        {
+            imageDto.FileBase64 = GetFile(imageDto.FileName);
+        }
+
+        return imageDtos;
+    }
+
     public async Task<ImageDto> UploadImage(IFormFile file)
     {
         CheckFile(file);

@@ -24,6 +24,13 @@ public class ImageController : ControllerBase
         var image = await _imageService.GetImage(imageId);
         return image;
     }
+
+    [HttpGet]
+    public async Task<ActionResult<ImageDto[]>> GetImages(int page = 1, int pageSize = 20)
+    {
+        var images = await _imageService.GetImages(page, pageSize);
+        return Ok(images);
+    }
     
     /**
      * Uploads an image.

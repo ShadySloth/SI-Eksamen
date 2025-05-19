@@ -23,6 +23,17 @@ public class ImageRepository : IImageRepository
         return image!;
     }
 
+    public Task<Image[]> GetImages(int page, int pageSize)
+    {
+        var images = _context.Images
+            .OrderBy(i => i.FileName)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToArrayAsync();
+        
+        return images;
+    }
+
     public async Task<Image> UploadImage(Image image)
     {
         await _context.Images.AddAsync(image);
