@@ -36,7 +36,7 @@ string password = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD") ?? "";
 string database = Environment.GetEnvironmentVariable("POSTGRES_DATABASE") ?? "";
 string dbHost = Environment.GetEnvironmentVariable("POSTGRES_HOST") ?? "localhost";
 builder.Services.AddDbContext<ImageContext>(options =>
-    options.UseNpgsql($"Host={dbHost};Database={database};Username={username};Password={password}"));
+    options.UseNpgsql($"Host=localhost;Database={database};Username={username};Password={password}"));
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
