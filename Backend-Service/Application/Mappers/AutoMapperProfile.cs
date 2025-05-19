@@ -8,8 +8,12 @@ public class AutoMapperProfile : Profile
 {
     public AutoMapperProfile()
     {
-        // Image
+        //Image
         CreateMap<Image, ImageDto>();
         CreateMap<ImageDto, Image>();
+        
+        //Label
+        CreateMap<Label, LabelDto>();
+        CreateMap<LabelDto, Label>();
     }
 }
