@@ -27,6 +27,7 @@ services:
     volumes:
       - ./Backend-Service-Model-Trainer:/app
     restart: always
+    network_mode: "host"  # <-- Her
 
 volumes:
   mariadb_data_map:
