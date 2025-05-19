@@ -5,3 +5,31 @@ riderModule.iml
 /_ReSharper.Caches/
 .idea
 .env
+/db
+/dbcontext
+
+
+
+# Python cache
+/__pycache__/
+*.py[cod]
+
+# Virtual environments
+venv/
+.env/
+env/
+
+# Init scripts / DB init
+*.sql
+mariadb-init/
+
+# Logs
+*.log
+
+# IDE/editor
+.vscode/
+.idea/
+
+# OS/system
+.DS_Store
+Thumbs.db
