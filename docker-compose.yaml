@@ -4,7 +4,8 @@
     build:
       context: .
       dockerfile: Backend-Service/Dockerfile
-      
+    environment:
+      POSTGRES_HOST: ${POSTGRES_HOST}
   postgresDb:
     image: postgres:latest
     ports:
