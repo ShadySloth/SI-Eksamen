@@ -1,6 +1,10 @@
-﻿version: "3.9"
+﻿services:
+  backend-service:
+    image: backend-service
+    build:
+      context: .
+      dockerfile: Backend-Service/Dockerfile
 
-services:
   mariadb:
     image: mariadb:11.3
     container_name: ai_service_db
@@ -27,7 +31,6 @@ services:
     volumes:
       - ./Backend-Service-Model-Trainer:/app
     restart: always
-    network_mode: "host"  # <-- Her
 
 volumes:
   mariadb_data_map:
