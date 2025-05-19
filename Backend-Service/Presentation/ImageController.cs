@@ -15,9 +15,11 @@ public class ImageController : ControllerBase
         _imageService = imageService;
     }
 
-    /**
-     * Gets an image by id.
-     */
+    /// <summary>
+    /// Gets an image by id.
+    /// </summary>
+    /// <param name="imageId"></param>
+    /// <returns></returns>
     [HttpGet("{imageId}")]
     public async Task<ActionResult<ImageDto>> GetImageAsync(Guid imageId)
     {
@@ -25,6 +27,12 @@ public class ImageController : ControllerBase
         return image;
     }
 
+    /// <summary>
+    /// Gets paginated images.
+    /// </summary>
+    /// <param name="page"></param>
+    /// <param name="pageSize"></param>
+    /// <returns></returns>
     [HttpGet]
     public async Task<ActionResult<ImageDto[]>> GetImages(int page = 1, int pageSize = 10)
     {
@@ -32,19 +40,15 @@ public class ImageController : ControllerBase
         return Ok(images);
     }
     
-    /**
-     * Uploads an image.
-     */
+    /// <summary>
+    /// Uploads an image.
+    /// </summary>
+    /// <param name="file"></param>
+    /// <returns></returns>
     [HttpPost]
     public async Task<IActionResult> UploadImageAsync(IFormFile file)
     {
         var image = await _imageService.UploadImage(file);
         return Ok(image);
-    }
-
-    [HttpGet("test")]
-    public IActionResult Test()
-    {
-        return Ok();
     }
 }
