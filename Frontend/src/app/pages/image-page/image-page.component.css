@@ -1,0 +1,75 @@
+/* 1. Prevent outermost scrollbars */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* 2. Root container */
+.image-page {
+  display: flex;
+  height: 100vh;
+  overflow: hidden; /* Prevent inner scrollbars from escaping */
+}
+
+/* 3. Sidebars */
+.left-side-list,
+.right-side-list {
+  width: 15vw;
+  max-width: 100px;
+  overflow: hidden; /* Scroll only if content overflows */
+  padding: 1rem 0.5rem;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+/* 4. Center area */
+.center-part {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Prevent scrollbars here */
+}
+
+/* 5. Selected image section */
+.selected-image {
+  flex: 1; /* Fill available space */
+  overflow: auto; /* Scroll if image is too large */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  text-align: center;
+}
+
+/* 6. Image preview */
+.selected-image img {
+  max-width: 90%;
+  max-height: 90%;
+}
+
+/* 7. Horizontal image list */
+.image-list-horizontal {
+  flex-shrink: 0;
+  max-height: 150px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 1rem;
+  padding: 0.5rem;
+  border-top: 1px solid #ccc;
+}
+
+.image-item {
+  flex: 0 0 auto;
+  text-align: center;
+}
+
+.image-item img {
+  max-height: 100px;
+  width: auto;
+  object-fit: contain;
+}

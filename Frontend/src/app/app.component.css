@@ -1,0 +1,14 @@
+.main {
+  display: flex; /* horizontal by default */
+  height: 100vh; /* full viewport height */
+  width: 100vw; /* full viewport width */
+}
+
+.sidebar {
+}
+
+.content {
+  flex: 1; /* take up remaining space */
+  overflow: auto; /* scroll if needed */
+  padding: 20px; /* add some padding */
+}

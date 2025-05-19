@@ -3,3 +3,8 @@ export interface picture {
   fileName: string;
   fileBase64: string;
 }
+
+export interface label {
+  id: string;
+  name: string;
+}

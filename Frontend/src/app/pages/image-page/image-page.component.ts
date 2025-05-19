@@ -1,5 +1,5 @@
 import {Component, ElementRef, NgIterable, ViewChild} from '@angular/core';
-import {picture} from "../../models";
+import {label, picture} from "../../models";
 import {BackendServiceService} from "../../services/backend-service.service";
 
 @Component({
@@ -9,9 +9,21 @@ import {BackendServiceService} from "../../services/backend-service.service";
 })
 export class ImagePageComponent {
   selectedImage: picture | null = null;
-  imageList: NgIterable<picture> = [];
+  imageList: picture[] = [];
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
   selectedFile: File | null = null;
+  labelList: label[] = [
+    {id: '1', name: 'Label 1'},
+    {id: '2', name: 'Label 2'},
+    {id: '3', name: 'Label 3'},
+    {id: '4', name: 'Label 4'},
+    {id: '5', name: 'Label 5'},
+    {id: '6', name: 'Label 6'},
+    {id: '7', name: 'Label 7'},
+    {id: '8', name: 'Label 8'},
+    {id: '9', name: 'Label 9'},
+    {id: '10', name: 'Label 10'}
+  ];
 
   constructor(private backendService: BackendServiceService) {
     this.fetchImages();
@@ -43,5 +55,12 @@ export class ImagePageComponent {
     // Fetch images from the backend and update imageList
     // This is a placeholder, implement the actual fetch logic
     this.imageList = await this.backendService.getImages();
+    if (this.imageList.length > 0) {
+      this.selectedImage = this.imageList[0]; // Select the first image by default
+    }
+  }
+
+  selectImage(img: picture) {
+    this.selectedImage = img;
   }
 }

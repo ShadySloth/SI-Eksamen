@@ -1,14 +1,35 @@
 <button (click)="triggerFileSelect()">Upload Image</button>
 <input type="file" #fileInput style="display: none" (change)="onFileSelected($event)">
 
-<!-- Show selected image -->
-<div *ngIf="selectedImage">
-    <h3>{{ selectedImage.fileName }}</h3>
-    <img [src]="'data:image/png;base64,' + selectedImage.fileBase64" alt="Selected Image" style="max-width: 300px;">
-</div>
+<div class="image-page">
+  <!-- Left Vertical List -->
+  <div class="left-side-list">
+    <div *ngFor="let label of labelList">
+      <p>{{label.name}}</p>
+    </div>
+  </div>
 
-<!-- List of uploaded images -->
-<div *ngFor="let img of imageList">
-    <h4>{{ img.fileName }}</h4> <img [src]="'data:image/png;base64,' + img.fileBase64" alt="Image" style="max-width: 200px;">
-</div>
+  <!-- Center Area -->
+  <div class="center-part">
+    <!-- Top part: Selected image -->
+    <div class="selected-image" *ngIf="selectedImage">
+      <h3>{{ selectedImage.fileName }}</h3>
+      <img [src]="'data:image/png;base64,' + selectedImage.fileBase64" alt="Selected Image">
+    </div>
 
+    <!-- Bottom part: Horizontal image list -->
+    <div class="image-list-horizontal">
+      <div *ngFor="let img of imageList" class="image-item" (click)="selectImage(img)">
+        <h4>{{ img.fileName }}</h4>
+        <img [src]="'data:image/png;base64,' + img.fileBase64" alt="Image">
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Vertical List -->
+  <div class="right-side-list">
+    <div *ngFor="let label of labelList">
+      <p>{{label.name}}</p>
+    </div>
+  </div>
+</div>
