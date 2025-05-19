@@ -5,7 +5,7 @@
       context: .
       dockerfile: Backend-Service/Dockerfile
     ports:
-      - "8001:8000"
+      - "5432:8000"
 
   mariadb:
     image: mariadb:11.3
