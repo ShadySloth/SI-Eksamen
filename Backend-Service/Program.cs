@@ -16,9 +16,9 @@ builder.Services.AddScoped<IImageRepository, ImageRepository>();
 builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddControllers();
 
-if (File.Exists("../env"))
+if (File.Exists("../.env"))
 {
-    foreach (var line in File.ReadAllLines("../env"))
+    foreach (var line in File.ReadAllLines("../.env"))
     {
         if (string.IsNullOrWhiteSpace(line) || line.TrimStart().StartsWith("#"))
             continue;
