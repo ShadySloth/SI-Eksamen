@@ -6,6 +6,11 @@
       dockerfile: Backend-Service/Dockerfile
     environment:
       POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DATABASE: ${POSTGRES_DATABASE}
+    ports:
+      - "5001:8080"
   postgresDb:
     image: postgres:latest
     ports:

@@ -13,9 +13,11 @@ export class BackendServiceService {
   constructor(private httpClient: HttpClient) { }
 
   // function to upload an image to backend, should sent file to backend
-  async uploadImage(image: picture) {
+  async uploadImage(image: FormData) {
+    return await firstValueFrom(this.httpClient.post<picture>(this.baseUrl + "/image", image))
+  }
 
-
-    //return await firstValueFrom(this.httpClient.post<picture>(this.baseUrl + "/image", img))
+  async getImages() {
+    return await firstValueFrom(this.httpClient.get<picture[]>(this.baseUrl + "/image"))
   }
 }

@@ -1,10 +1,14 @@
-<p>image-page works!</p>
-<!-- make button for uploading image and a viewer to see set image. Then make a list of small pictures showing uploaded pictures -->
-<button (click)="triggerFileSelect()">Upload File</button>
+<button (click)="triggerFileSelect()">Upload Image</button>
 <input type="file" #fileInput style="display: none" (change)="onFileSelected($event)">
-<div *ngIf="imageList">
-    <h3>Uploaded Images:</h3>
-    <div *ngFor="let image of imageList">
-        <img [src]="image.src" alt="Uploaded Image" />
-    </div>
+
+<!-- Show selected image -->
+<div *ngIf="selectedImage">
+    <h3>{{ selectedImage.fileName }}</h3>
+    <img [src]="'data:image/png;base64,' + selectedImage.fileBase64" alt="Selected Image" style="max-width: 300px;">
 </div>
+
+<!-- List of uploaded images -->
+<div *ngFor="let img of imageList">
+    <h4>{{ img.fileName }}</h4> <img [src]="'data:image/png;base64,' + img.fileBase64" alt="Image" style="max-width: 200px;">
+</div>
+
