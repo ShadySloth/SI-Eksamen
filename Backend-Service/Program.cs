@@ -50,6 +50,16 @@ builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(opt =>
+{
+    opt.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin();
+        policy.AllowAnyMethod();
+        policy.AllowAnyHeader();
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
