@@ -72,7 +72,7 @@ public class LabelController : ControllerBase
     /// <param name="labelId"></param>
     /// <returns></returns>
     [HttpDelete("{labelId}")]
-    public async Task<ActionResult> DeleteLabel(Guid labelId)
+    public async Task<IActionResult> DeleteLabel(Guid labelId)
     {
         await _labelService.DeleteLabel(labelId);
 
