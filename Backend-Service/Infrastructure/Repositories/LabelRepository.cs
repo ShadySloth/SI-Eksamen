@@ -17,7 +17,7 @@ public class LabelRepository : ILabelRepository
     
     public async Task<Label[]> GetLabels()
     {
-        var labels = await _context.Labels.ToArrayAsync();
+        var labels = await _context.Labels.Include(label => label.Images).ToArrayAsync();
 
         return labels;
     }
