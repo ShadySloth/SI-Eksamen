@@ -10,6 +10,8 @@ public interface ISegmentationService
     
     public Task<SegmentationDto[]> GetSegmentationsByImage(Guid imageId);
     
+    public Task<SegmentationDto[]> GetSegmentationsByImageAndLabel(Guid imageId, Guid labelId);
+    
     public Task<SegmentationDto> CreateSegmentation(SegmentationDto segmentation);
     
     public Task<SegmentationDto> UpdateSegmentation(SegmentationDto segmentation);

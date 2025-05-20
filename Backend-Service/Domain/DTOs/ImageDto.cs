@@ -10,7 +10,4 @@ public class ImageDto
     
     /// The base64 string of the image file.
     public string? FileBase64 { get; set; }
-    
-    //Relations
-    public List<LabelDto> Labels { get; set; } = [];
 }

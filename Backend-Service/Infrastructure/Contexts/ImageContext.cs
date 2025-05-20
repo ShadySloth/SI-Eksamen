@@ -12,6 +12,7 @@ public class ImageContext : DbContext
     public DbSet<Image> Images { get; set; }
     public DbSet<Label> Labels { get; set; }
     public DbSet<Segmentation> Segmentations { get; set; }
+    public DbSet<DataSet> DataSets { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

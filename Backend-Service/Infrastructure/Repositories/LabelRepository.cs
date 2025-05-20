@@ -49,10 +49,15 @@ public class LabelRepository : ILabelRepository
 
     public async Task<Label> UpdateLabel(Label label)
     {
-        var updatedLabel = _context.Labels.Update(label);
+        _context.Labels.Update(label);
         await _context.SaveChangesAsync();
+
+        var updatedLabel = await _context.Labels
+            .Where(l => l.Id == label.Id)
+            .Include(l => l.Images)
+            .FirstOrDefaultAsync();
         
-        return updatedLabel.Entity;
+        return updatedLabel!;
     }
 
     public async Task DeleteLabel(Guid labelId)
