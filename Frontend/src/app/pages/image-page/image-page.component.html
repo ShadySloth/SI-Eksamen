@@ -37,6 +37,21 @@
           alt="Selected Image"
           draggable="false"
         />
+
+        <!-- Show each segmentation for current image and label -->
+        <div
+          *ngFor="let seg of segmentations"
+          class="segmentation-box"
+          [ngStyle]="{
+            left: seg.firstCoordinateX + 'px',
+            top: seg.firstCoordinateY + 'px',
+            width: (seg.secondCoordinateX - seg.firstCoordinateX) + 'px',
+            height: (seg.secondCoordinateY - seg.firstCoordinateY) + 'px'
+          }"
+          (click)="removeSegmentation(seg, $event)"
+          title="Click to remove"
+        >
+        </div>
         <div
           *ngIf="drawing"
           class="selection-rect"

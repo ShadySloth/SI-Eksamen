@@ -19,7 +19,9 @@ export class ImagePageComponent implements OnInit {
   labelList: Label[] = [];
   selectedLabels: Label[] = [];
   activeLabel: Label | null = null;
+  segmentations: Segmentation[] = [];
 
+  skipNextDraw = true;
   drawing = false;
   startX = 0;
   startY = 0;
@@ -70,13 +72,30 @@ export class ImagePageComponent implements OnInit {
     this.imageList = await this.imageService.getImages();
     if (this.imageList.length > 0) {
       this.selectImage(this.imageList[0]);
+      this.activeLabel = this.labelList[0];
+      this.loadSegmentations();
     }
+  }
+
+  async loadSegmentations() {
+    if (!this.selectedImage || !this.activeLabel) return;
+
+    this.segmentations = await this.segmentationService.getSegmentationsForImageAndLabel(
+      this.selectedImage.id!,
+      this.activeLabel.id!
+      );
   }
 
   selectImage(img: Picture) {
     this.selectedImage = img;
-    this.selectedLabels = this.labelList.filter(label => label.images?.some(image =>
-      image.id === img.id));
+
+    // Filter labels attached to the image
+    this.selectedLabels = this.labelList.filter(label =>
+      label.images?.some(image => image.id === img.id)
+    );
+
+    // Also load segmentations for current active label
+    this.loadSegmentations();
   }
 
   async addLabel() {
@@ -125,12 +144,18 @@ export class ImagePageComponent implements OnInit {
   }
 
 
-  onPickRightLabel(label: any): void {
+  onPickRightLabel(label: Label) {
     this.activeLabel = label;
+    this.loadSegmentations();
   }
 
 
   startDraw(event: MouseEvent) {
+    if (this.skipNextDraw) {
+      this.skipNextDraw = false;
+      return;
+    }
+
     const bounds = this.imageRef.nativeElement.getBoundingClientRect();
     this.startX = event.clientX - bounds.left;
     this.startY = event.clientY - bounds.top;
@@ -167,7 +192,7 @@ export class ImagePageComponent implements OnInit {
     this.saveCoordinates(this.finalCoords);
   }
 
-  private saveCoordinates(finalCoords: { x1: number; y1: number; x2: number; y2: number }) {
+  private async saveCoordinates(finalCoords: { x1: number; y1: number; x2: number; y2: number }) {
     const segmentationData: Segmentation = {
       firstCoordinateX: finalCoords.x1,
       firstCoordinateY: finalCoords.y1,
@@ -177,6 +202,23 @@ export class ImagePageComponent implements OnInit {
       imageId: this.selectedImage!.id!
     }
 
-    this.segmentationService.addSegmentation(segmentationData);
+    await this.segmentationService.addSegmentation(segmentationData);
+    this.segmentations = [...this.segmentations, segmentationData];
+  }
+
+  async removeSegmentation(segmentation: Segmentation, event: MouseEvent): Promise<void> {
+    event.stopPropagation();
+    this.skipNextDraw = true;
+
+    const confirmDelete = confirm('Remove this segmentation?');
+    if (!confirmDelete) return;
+
+    try {
+      await this.segmentationService.deleteSegmentation(segmentation.id!);
+      this.segmentations = this.segmentations.filter(s => s.id !== segmentation.id);
+    } catch (err) {
+      console.error('Failed to remove segmentation:', err);
+      // optionally show a message or reload the list
+    }
   }
 }

@@ -65,12 +65,9 @@ public class SegmentationRepository : ISegmentationRepository
         return updatedSegmentation.Entity;
     }
 
-    public async Task DeleteSegmentation(Guid segmentationId)
+    public async Task DeleteSegmentation(Segmentation segmentation)
     {
-        var segmentation = await _context.Segmentations
-            .FirstOrDefaultAsync(s => s.Id == segmentationId);
-        _context.Segmentations.Remove(segmentation!);
-        
+        _context.Segmentations.Remove(segmentation);
         await _context.SaveChangesAsync();
     }
 }

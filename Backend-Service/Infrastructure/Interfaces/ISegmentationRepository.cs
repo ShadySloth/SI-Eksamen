@@ -10,5 +10,5 @@ public interface ISegmentationRepository
     Task<Segmentation[]> GetSegmentationsByImage(Guid imageId);
     Task<Segmentation> CreateSegmentation(Segmentation segmentation);
     Task<Segmentation> UpdateSegmentation(Segmentation segmentation);
-    Task DeleteSegmentation(Guid segmentationId);
+    Task DeleteSegmentation(Segmentation segmentationId);
 }

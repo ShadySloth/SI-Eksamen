@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {environment} from "../../environment/environment.development";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {Segmentation} from "../models";
 import {firstValueFrom} from "rxjs";
 
@@ -30,5 +30,15 @@ export class SegmentationService {
 
   async getSegmentationsByImageId(imageId: string) {
     return await firstValueFrom(this.httpClient.get<Segmentation[]>(this.baseUrl + "/segmentation/image/" + imageId))
+  }
+
+  async getSegmentationsForImageAndLabel(imageId: string, labelId: string) {
+    const params = new HttpParams()
+      .set('imageId', imageId)
+      .set('labelId', labelId);
+
+    return await firstValueFrom(
+      this.httpClient.get<Segmentation[]>(`${this.baseUrl}/segmentation/imageandlabel`, { params })
+    );
   }
 }

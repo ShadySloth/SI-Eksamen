@@ -61,9 +61,9 @@ public class SegmentationService : ISegmentationService
         return updatedSegmentationDto;
     }
 
-    public Task DeleteSegmentation(Guid segmentationId)
+    public async Task DeleteSegmentation(Guid segmentationId)
     {
-        _segmentationRepository.DeleteSegmentation(segmentationId);
-        return Task.CompletedTask;
+        var segmentation = await _segmentationRepository.GetSegmentationById(segmentationId);
+        await _segmentationRepository.DeleteSegmentation(segmentation);
     }
 }
