@@ -1,0 +1,14 @@
+<button (click)="triggerFileSelect()">Upload Image</button>
+<input type="file" #fileInput style="display: none" (change)="onFileSelected($event)">
+
+<!-- Show selected image -->
+<div *ngIf="selectedImage">
+    <h3>{{ selectedImage.fileName }}</h3>
+    <img [src]="'data:image/png;base64,' + selectedImage.fileBase64" alt="Selected Image" style="max-width: 300px;">
+</div>
+
+<!-- List of uploaded images -->
+<div *ngFor="let img of imageList">
+    <h4>{{ img.fileName }}</h4> <img [src]="'data:image/png;base64,' + img.fileBase64" alt="Image" style="max-width: 200px;">
+</div>
+

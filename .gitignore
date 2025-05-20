@@ -33,3 +33,6 @@ mariadb-init/
 # OS/system
 .DS_Store
 Thumbs.db
+db
+images/
+/.env
