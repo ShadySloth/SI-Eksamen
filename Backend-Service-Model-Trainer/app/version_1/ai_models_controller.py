@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from sqlmodel.ext.asyncio.session import AsyncSession
 
-from app.db_contexts.mariadb_session import get_session
+from app.contexts.mariadb_session import get_session
 from app.entities.schemes.ai_model import AIModelCreate
 
 router = APIRouter()
@@ -9,7 +9,7 @@ router = APIRouter()
 from fastapi import Depends
 from typing import List
 from app.entities.models.ai_model import AIModel
-from app.services.ai_model_services import ai_model_service
+from app.business_logic.services.ai_model_services import ai_model_service
 
 
 @router.post("/", response_model=AIModel)
