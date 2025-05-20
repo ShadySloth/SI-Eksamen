@@ -1,24 +1,43 @@
 import {Component, ElementRef, NgIterable, OnInit, ViewChild} from '@angular/core';
-import {Label, Picture} from "../../models";
+import {Label, Picture, Segmentation} from "../../models";
 import {ImageService} from "../../services/image.service";
 import {LabelService} from "../../services/label.service";
+import {SegmentationService} from "../../services/segmentation.service";
 
 @Component({
   selector: 'app-image-page',
   templateUrl: './image-page.component.html',
   styleUrls: ['./image-page.component.css']
 })
+
 export class ImagePageComponent implements OnInit {
+  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('imageRef', { static: false }) imageRef!: ElementRef<HTMLImageElement>;
   selectedImage: Picture | null = null;
   imageList: Picture[] = [];
-  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
   selectedFile: File | null = null;
   labelList: Label[] = [];
   selectedLabels: Label[] = [];
+  labelForSegmentation: Label | null = null;
+
+  drawing = false;
+  startX = 0;
+  startY = 0;
+
+  finalCoords: { x1: number, y1: number, x2: number, y2: number } | null = null;
+
+  rect = {
+    left: 0,
+    top: 0,
+    width: 0,
+    height: 0
+  };
+
   newLabel: string = '';
 
   constructor(private imageService: ImageService,
-              private labelService: LabelService) {}
+              private labelService: LabelService,
+              private segmentationService: SegmentationService) {}
 
   ngOnInit(): void {
     this.fetchImages();
@@ -92,5 +111,59 @@ export class ImagePageComponent implements OnInit {
 
   isLabelSelected(label: Label): boolean {
     return this.selectedLabels.some(l => l.id === label.id);
+  }
+
+
+  startDraw(event: MouseEvent) {
+    const bounds = this.imageRef.nativeElement.getBoundingClientRect();
+    this.startX = event.clientX - bounds.left;
+    this.startY = event.clientY - bounds.top;
+    this.rect = { left: this.startX, top: this.startY, width: 0, height: 0 };
+    this.drawing = true;
+  }
+
+  onDraw(event: MouseEvent) {
+    if (!this.drawing) return;
+
+    const bounds = this.imageRef.nativeElement.getBoundingClientRect();
+    const currentX = event.clientX - bounds.left;
+    const currentY = event.clientY - bounds.top;
+
+    this.rect = {
+      left: Math.min(this.startX, currentX),
+      top: Math.min(this.startY, currentY),
+      width: Math.abs(currentX - this.startX),
+      height: Math.abs(currentY - this.startY)
+    };
+  }
+
+  endDraw() {
+    if (!this.drawing) return;
+
+    this.drawing = false;
+
+    const x1 = this.startX;
+    const y1 = this.startY;
+    const x2 = this.rect.left + this.rect.width;
+    const y2 = this.rect.top + this.rect.height;
+
+    this.finalCoords = { x1, y1, x2, y2 };
+    this.saveCoordinates(this.finalCoords);
+
+    console.log('Saved pixel coordinates:', this.finalCoords);
+  }
+
+  private saveCoordinates(finalCoords: { x1: number; y1: number; x2: number; y2: number }) {
+    const segmentationData: Segmentation = {
+      firstCoordinateX: finalCoords.x1,
+      firstCoordinateY: finalCoords.y1,
+      secondCoordinateX: finalCoords.x2,
+      secondCoordinateY: finalCoords.y2,
+      labelId: this.labelForSegmentation!.id!,
+      imageId: this.selectedImage!.id!
+    }
+
+    this.segmentationService.addSegmentation(segmentationData);
+    console.log("Segmentation data saved:", segmentationData);
   }
 }

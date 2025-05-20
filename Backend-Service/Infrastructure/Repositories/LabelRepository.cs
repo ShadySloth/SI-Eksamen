@@ -51,7 +51,7 @@ public class LabelRepository : ILabelRepository
     {
         var updatedLabel = _context.Labels.Update(label);
         await _context.SaveChangesAsync();
-        
+
         return updatedLabel.Entity;
     }
 

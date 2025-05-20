@@ -7,4 +7,8 @@ import { Component } from '@angular/core';
 })
 export class SidebarComponent {
 
+  // redirect to a given URL, eg. google.dk
+  easterComesEarly() {
+    window.location.href = 'https://youtu.be/IqPr6bcTJhc?si=l6HLynJS0ow9Q8cD&t=10';
+  }
 }

@@ -30,8 +30,27 @@
   <div class="center-part">
     <!-- Top part: Selected image -->
     <div class="selected-image" *ngIf="selectedImage">
-      <h3>{{ selectedImage.fileName }}</h3>
-      <img [src]="'data:image/png;base64,' + selectedImage.fileBase64" alt="Selected Image">
+      <div class="image-container" (mousedown)="startDraw($event)" (mousemove)="onDraw($event)" (mouseup)="endDraw()">
+        <img
+          #imageRef
+          [src]="'data:image/png;base64,' + selectedImage.fileBase64"
+          alt="Selected Image"
+          draggable="false"
+        />
+        <div
+          *ngIf="drawing"
+          class="selection-rect"
+          [ngStyle]="{
+      left: rect.left + 'px',
+      top: rect.top + 'px',
+      width: rect.width + 'px',
+      height: rect.height + 'px'
+    }"
+        ></div>
+        <div *ngIf="!selectedImage" class="no-image-placeholder">
+          <p>Select an image to begin annotation.</p>
+        </div>
+      </div>
     </div>
 
     <!-- Bottom part: Horizontal image list -->
