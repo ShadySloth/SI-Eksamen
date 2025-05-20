@@ -77,7 +77,6 @@ export class ImagePageComponent implements OnInit {
     this.selectedImage = img;
     this.selectedLabels = this.labelList.filter(label => label.images?.some(image =>
       image.id === img.id));
-    console.log("Labels for selected image: ", this.selectedLabels);
   }
 
   async addLabel() {
@@ -94,16 +93,30 @@ export class ImagePageComponent implements OnInit {
     this.labelList = labels;
   }
 
-  onLabelToggle(label: Label, event: Event): void {
+  async onLabelToggle(label: Label, event: Event): Promise<void> {
     const input = event.target as HTMLInputElement;
     const checked = input.checked;
 
-    if (checked) {
-      label.images?.push(this.selectedImage!);
-      this.selectedLabels.push(label);
-      this.labelService.updateLabel(label);
-    } else {
-      this.selectedLabels = this.selectedLabels.filter(l => l.id !== label.id);
+    const originalImages = [...(label.images ?? [])];
+    const originalSelectedLabels = [...this.selectedLabels];
+
+    try {
+      if (checked) {
+        label.images?.push(this.selectedImage!);
+        this.selectedLabels.push(label);
+      } else {
+        label.images = label.images?.filter(img => img.id !== this.selectedImage?.id);
+        this.selectedLabels = this.selectedLabels.filter(l => l.id !== label.id);
+      }
+
+      await this.labelService.updateLabel(label);
+    } catch (error) {
+      console.error('Error updating label:', error);
+
+      label.images = originalImages;
+      this.selectedLabels = originalSelectedLabels;
+  
+      input.checked = !checked;
     }
   }
 
@@ -152,8 +165,6 @@ export class ImagePageComponent implements OnInit {
 
     this.finalCoords = { x1, y1, x2, y2 };
     this.saveCoordinates(this.finalCoords);
-
-    console.log('Saved pixel coordinates:', this.finalCoords);
   }
 
   private saveCoordinates(finalCoords: { x1: number; y1: number; x2: number; y2: number }) {
@@ -167,6 +178,5 @@ export class ImagePageComponent implements OnInit {
     }
 
     this.segmentationService.addSegmentation(segmentationData);
-    console.log("Segmentation data saved:", segmentationData);
   }
 }
