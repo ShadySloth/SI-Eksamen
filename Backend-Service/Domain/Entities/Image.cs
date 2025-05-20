@@ -7,4 +7,7 @@ public class Image
     
     /// The file name of the image
     public required string FileName { get; set; }
+    
+    // Relations
+    public List<Label> Labels { get; set; } = [];
 }
