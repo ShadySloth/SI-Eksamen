@@ -1,33 +1,29 @@
-import {Component, ElementRef, NgIterable, ViewChild} from '@angular/core';
-import {label, picture} from "../../models";
-import {BackendServiceService} from "../../services/backend-service.service";
+import {Component, ElementRef, NgIterable, OnInit, ViewChild} from '@angular/core';
+import {Label, Picture} from "../../models";
+import {ImageService} from "../../services/image.service";
+import {LabelService} from "../../services/label.service";
 
 @Component({
   selector: 'app-image-page',
   templateUrl: './image-page.component.html',
   styleUrls: ['./image-page.component.css']
 })
-export class ImagePageComponent {
-  selectedImage: picture | null = null;
-  imageList: picture[] = [];
+export class ImagePageComponent implements OnInit {
+  selectedImage: Picture | null = null;
+  imageList: Picture[] = [];
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
   selectedFile: File | null = null;
-  labelList: label[] = [
-    {id: '1', name: 'Label 1'},
-    {id: '2', name: 'Label 2'},
-    {id: '3', name: 'Label 3'},
-    {id: '4', name: 'Label 4'},
-    {id: '5', name: 'Label 5'},
-    {id: '6', name: 'Label 6'},
-    {id: '7', name: 'Label 7'},
-    {id: '8', name: 'Label 8'},
-    {id: '9', name: 'Label 9'},
-    {id: '10', name: 'Label 10'}
-  ];
+  labelList: Label[] = [];
+  selectedLabels: Label[] = [];
+  newLabel: string = '';
 
-  constructor(private backendService: BackendServiceService) {
+  constructor(private imageService: ImageService,
+              private labelService: LabelService) {}
+
+  ngOnInit(): void {
     this.fetchImages();
-  }
+    this.fetchLabels();
+    }
 
   triggerFileSelect(): void {
     this.fileInput.nativeElement.click();  // Opens the file picker
@@ -46,7 +42,7 @@ export class ImagePageComponent {
 
     const formData = new FormData();
     formData.append('file', this.selectedFile, this.selectedFile.name);
-    var response = await this.backendService.uploadImage(formData)
+    var response = await this.imageService.uploadImage(formData);
     this.selectedImage = response;
     this.imageList = [...this.imageList, response];
   }
@@ -54,13 +50,47 @@ export class ImagePageComponent {
   private async fetchImages(): Promise<void> {
     // Fetch images from the backend and update imageList
     // This is a placeholder, implement the actual fetch logic
-    this.imageList = await this.backendService.getImages();
+    this.imageList = await this.imageService.getImages();
     if (this.imageList.length > 0) {
-      this.selectedImage = this.imageList[0]; // Select the first image by default
+      this.selectImage(this.imageList[0]);
     }
   }
 
-  selectImage(img: picture) {
+  selectImage(img: Picture) {
     this.selectedImage = img;
+    this.selectedLabels = this.labelList.filter(label => label.images?.some(image =>
+      image.id === img.id));
+    console.log("Labels for selected image: ", this.selectedLabels);
+  }
+
+  async addLabel() {
+    if (this.newLabel.trim() === '') return;
+    const newLabelObj: Label = {
+      name: this.newLabel
+    };
+    var newLabel = await this.labelService.addLabel(newLabelObj);
+    this.labelList = [... this.labelList, newLabel];
+  }
+
+  private async fetchLabels() {
+    var labels = await this.labelService.getLabels();
+    this.labelList = labels;
+  }
+
+  onLabelToggle(label: Label, event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const checked = input.checked;
+
+    if (checked) {
+      label.images?.push(this.selectedImage!);
+      this.selectedLabels.push(label);
+      this.labelService.updateLabel(label);
+    } else {
+      this.selectedLabels = this.selectedLabels.filter(l => l.id !== label.id);
+    }
+  }
+
+  isLabelSelected(label: Label): boolean {
+    return this.selectedLabels.some(l => l.id === label.id);
   }
 }

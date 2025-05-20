@@ -1,13 +1,30 @@
-<button (click)="triggerFileSelect()">Upload Image</button>
-<input type="file" #fileInput style="display: none" (change)="onFileSelected($event)">
-
+<div>
+  <div>
+    <button (click)="triggerFileSelect()">Upload Image</button>
+    <input type="file" #fileInput style="display: none" (change)="onFileSelected($event)">
+  </div>
+    <div class="add-label">
+    <!-- input field to create new label and add to labellist-->
+    <input type="text" [(ngModel)]="newLabel" placeholder="New Label">
+    <button (click)="addLabel()">Add</button>
+  </div>
+</div>
 <div class="image-page">
   <!-- Left Vertical List -->
   <div class="left-side-list">
     <div *ngFor="let label of labelList">
-      <p>{{label.name}}</p>
+      <label>
+        <input
+          type="checkbox"
+          [value]="label"
+          [checked]="isLabelSelected(label)"
+          (change)="onLabelToggle(label, $event)"
+        />
+        {{ label.name }}
+      </label>
     </div>
   </div>
+
 
   <!-- Center Area -->
   <div class="center-part">
@@ -28,8 +45,9 @@
 
   <!-- Right Vertical List -->
   <div class="right-side-list">
-    <div *ngFor="let label of labelList">
-      <p>{{label.name}}</p>
-    </div>
+    <h4>Selected Labels</h4>
+    <ul>
+      <li *ngFor="let label of selectedLabels">{{ label.name }}</li>
+    </ul>
   </div>
 </div>

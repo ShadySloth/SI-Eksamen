@@ -1,7 +1,7 @@
 .main {
   display: flex; /* horizontal by default */
-  height: 100vh; /* full viewport height */
-  width: 100vw; /* full viewport width */
+  height: 98vh; /* full viewport height */
+  width: 98vw; /* full viewport width */
 }
 
 .sidebar {

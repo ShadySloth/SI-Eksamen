@@ -8,7 +8,6 @@ public class LabelDto
     /// The name of the label.
     public required string Name { get; set; }
     
-    
     /// Array of image ids with label.
     public List<Guid> ImageIds { get; set; } = [];
     
