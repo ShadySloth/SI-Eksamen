@@ -18,7 +18,7 @@ export class ImagePageComponent implements OnInit {
   selectedFile: File | null = null;
   labelList: Label[] = [];
   selectedLabels: Label[] = [];
-  labelForSegmentation: Label | null = null;
+  activeLabel: Label | null = null;
 
   drawing = false;
   startX = 0;
@@ -67,8 +67,6 @@ export class ImagePageComponent implements OnInit {
   }
 
   private async fetchImages(): Promise<void> {
-    // Fetch images from the backend and update imageList
-    // This is a placeholder, implement the actual fetch logic
     this.imageList = await this.imageService.getImages();
     if (this.imageList.length > 0) {
       this.selectImage(this.imageList[0]);
@@ -111,6 +109,11 @@ export class ImagePageComponent implements OnInit {
 
   isLabelSelected(label: Label): boolean {
     return this.selectedLabels.some(l => l.id === label.id);
+  }
+
+
+  onPickRightLabel(label: any): void {
+    this.activeLabel = label;
   }
 
 
@@ -159,7 +162,7 @@ export class ImagePageComponent implements OnInit {
       firstCoordinateY: finalCoords.y1,
       secondCoordinateX: finalCoords.x2,
       secondCoordinateY: finalCoords.y2,
-      labelId: this.labelForSegmentation!.id!,
+      labelId: this.activeLabel!.id!,
       imageId: this.selectedImage!.id!
     }
 

@@ -64,9 +64,15 @@
 
   <!-- Right Vertical List -->
   <div class="right-side-list">
-    <h4>Selected Labels</h4>
-    <ul>
-      <li *ngFor="let label of selectedLabels">{{ label.name }}</li>
-    </ul>
-  </div>
+  <h4>Selected Labels</h4>
+  <ul>
+    <li
+      *ngFor="let label of selectedLabels"
+      (click)="onPickRightLabel(label)"
+      [class.active]="activeLabel?.id === label.id"
+    >
+      {{ label.name }}
+    </li>
+  </ul>
+</div>
 </div>

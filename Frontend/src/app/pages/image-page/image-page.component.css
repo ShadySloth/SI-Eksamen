@@ -98,3 +98,25 @@
   color: #888;
   margin-top: 2rem;
 }
+
+.right-side-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.right-side-list li {
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border-radius: 4px;
+}
+
+.right-side-list li:hover {
+  background-color: #efefef;
+}
+
+.right-side-list li.active {
+  background-color: #d0eaff;
+  font-weight: bold;
+}
