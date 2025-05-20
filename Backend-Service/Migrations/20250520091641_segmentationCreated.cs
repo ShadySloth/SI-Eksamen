@@ -57,8 +57,10 @@ namespace Backend_Service.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    FirstCoordinate = table.Column<double>(type: "double precision", nullable: false),
-                    SecondCoordinate = table.Column<double>(type: "double precision", nullable: false),
+                    FirstCoordinateX = table.Column<double>(type: "double precision", nullable: false),
+                    FirstCoordinateY = table.Column<double>(type: "double precision", nullable: false),
+                    SecondCoordinateX = table.Column<double>(type: "double precision", nullable: false),
+                    SecondCoordinateY = table.Column<double>(type: "double precision", nullable: false),
                     LabelId = table.Column<Guid>(type: "uuid", nullable: false),
                     ImageId = table.Column<Guid>(type: "uuid", nullable: false)
                 },

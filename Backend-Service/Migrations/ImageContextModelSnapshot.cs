@@ -63,7 +63,10 @@ namespace Backend_Service.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<double>("FirstCoordinate")
+                    b.Property<double>("FirstCoordinateX")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("FirstCoordinateY")
                         .HasColumnType("double precision");
 
                     b.Property<Guid>("ImageId")
@@ -72,7 +75,10 @@ namespace Backend_Service.Migrations
                     b.Property<Guid>("LabelId")
                         .HasColumnType("uuid");
 
-                    b.Property<double>("SecondCoordinate")
+                    b.Property<double>("SecondCoordinateX")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("SecondCoordinateY")
                         .HasColumnType("double precision");
 
                     b.HasKey("Id");

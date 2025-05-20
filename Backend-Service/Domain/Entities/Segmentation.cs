@@ -5,11 +5,17 @@ public class Segmentation
     /// The id of the segmentation.
     public Guid Id { get; set; }
     
-    /// The first coordinate of the segmentation.
-    public double FirstCoordinate { get; set; }
+    /// The first x-coordinate of the segmentation.
+    public double FirstCoordinateX { get; set; }
     
-    /// The second coordinate of the segmentation.
-    public double SecondCoordinate { get; set; }
+    /// The first y-coordinate of the segmentation.
+    public double FirstCoordinateY { get; set; }
+    
+    /// The second x-coordinate of the segmentation.
+    public double SecondCoordinateX { get; set; }
+    
+    /// The second y-coordinate of the segmentation.
+    public double SecondCoordinateY { get; set; }
     
     // Relations
     public Guid LabelId { get; set; }
