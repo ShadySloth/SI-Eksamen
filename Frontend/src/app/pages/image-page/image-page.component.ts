@@ -190,6 +190,7 @@ export class ImagePageComponent implements OnInit {
 
     this.finalCoords = { x1, y1, x2, y2 };
     this.saveCoordinates(this.finalCoords);
+    this.skipNextDraw = true;
   }
 
   private async saveCoordinates(finalCoords: { x1: number; y1: number; x2: number; y2: number }) {
@@ -202,8 +203,8 @@ export class ImagePageComponent implements OnInit {
       imageId: this.selectedImage!.id!
     }
 
-    await this.segmentationService.addSegmentation(segmentationData);
-    this.segmentations = [...this.segmentations, segmentationData];
+    var newSegmentation = await this.segmentationService.addSegmentation(segmentationData);
+    this.segmentations = [...this.segmentations, newSegmentation];
   }
 
   async removeSegmentation(segmentation: Segmentation, event: MouseEvent): Promise<void> {
