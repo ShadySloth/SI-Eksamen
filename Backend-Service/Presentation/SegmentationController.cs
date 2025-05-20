@@ -21,6 +21,13 @@ public class SegmentationController : ControllerBase
         var segmentationDto = await _segmentationService.GetSegmentationById(segmentationId);
         return Ok(segmentationDto);
     }
+
+    [HttpGet("imageandlabel")]
+    public async Task<ActionResult<SegmentationDto[]>> GetSegmentationByImageAndLabel([FromQuery]Guid imageId, [FromQuery]Guid labelId)
+    {
+        var segmentationDtos = await _segmentationService.GetSegmentationsByImageAndLabel(imageId, labelId);
+        return Ok(segmentationDtos);
+    }
     
     [HttpGet]
     public async Task<ActionResult<SegmentationDto[]>> GetSegmentationsByLabel([FromQuery]Guid labelId)

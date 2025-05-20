@@ -2,7 +2,6 @@ export interface Picture {
   id?: string;
   fileName: string;
   fileBase64: string;
-  labels?: Label[];
 }
 
 export interface Label {
