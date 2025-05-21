@@ -9,3 +9,13 @@ export interface Label {
   name: string;
   images?: Picture[];
 }
+
+export interface Segmentation {
+  id?: string;
+  firstCoordinateX: number;
+  firstCoordinateY: number;
+  secondCoordinateX: number;
+  secondCoordinateY: number;
+  labelId: string;
+  imageId: string;
+}

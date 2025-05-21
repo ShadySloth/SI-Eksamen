@@ -21,9 +21,9 @@ public class SegmentationDto
     // Relations
     public Guid LabelId { get; set; }
     
-    public LabelDto Label { get; set; }
+    public LabelDto? Label { get; set; }
     
     public Guid ImageId { get; set; }
     
-    public ImageDto Image { get; set; }
+    public ImageDto? Image { get; set; }
 }
