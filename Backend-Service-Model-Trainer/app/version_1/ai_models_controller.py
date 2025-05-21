@@ -1,6 +1,13 @@
-from fastapi import APIRouter
-from sqlmodel.ext.asyncio.session import AsyncSession
+import os
+import shutil
+from uuid import uuid4
 
+import cv2
+from fastapi import APIRouter, UploadFile, File
+from sqlmodel.ext.asyncio.session import AsyncSession
+from starlette.responses import FileResponse
+
+from app.business_logic.runners import yolo_runner
 from app.business_logic.services.tranings_data_service import train_model_on_set
 from app.contexts.local_cloud_storage_context import CloudSession
 from app.contexts.mariadb_session import get_session
@@ -33,7 +40,41 @@ async def delete(model_id: int, session: AsyncSession = Depends(get_session)):
     return {"ok": True}
 
 
-@router.post("/train")
+@router.post("/test/{model_id}", response_class=FileResponse)
+async def run_model_on_img(
+    model_id: int,
+    uploaded_file: UploadFile = File(...),
+    session: AsyncSession = Depends(get_session)
+):
+    # ── 1. Gem den uploadede fil til disk ─────────────────────────────
+    upload_dir = "uploads"
+    os.makedirs(upload_dir, exist_ok=True)
+
+    # Brug et unikt filnavn for at undgå konflikter
+    filename = f"{uuid4()}_{uploaded_file.filename}"
+    file_path = os.path.join(upload_dir, filename)
+
+    with open(file_path, "wb") as buffer:
+        shutil.copyfileobj(uploaded_file.file, buffer)
+
+    # ── 2. Kør YOLO detektion med stien til den gemte fil ─────────────
+    detected_image = await yolo_runner.detect(
+        model_path="results/yolo8n_model/weights/best.pt",
+        image=file_path  # ← bruger den gemte sti her
+    )
+
+    # ── 3. Gem output billede ─────────────────────────────────────────
+    output_path = f"results/detected_{model_id}.png"
+    cv2.imwrite(output_path, detected_image)
+
+    # ── 4. Returnér billedet som download ─────────────────────────────
+    return FileResponse(
+        output_path,
+        media_type="image/png",
+        filename="detected.png"
+    )
+
+@router.get("/train/", response_class=FileResponse)
 async def train_model(request: TrainingRequest, session_sql: AsyncSession = Depends(get_session)):
     # Mock CloudSession – i rigtig cloud ville du tilføje auth, bucket info etc.
     session_cloud = CloudSession()
@@ -46,9 +87,11 @@ async def train_model(request: TrainingRequest, session_sql: AsyncSession = Depe
             path=output_path,
             type="object_detection",
             description="YOLOv8n model finetuned for detecting custom objects",
-            model_type_id=request.selected_model  # eller None, hvis du ikke vil knytte til en modeltype
+            model_type_id= 1  # eller None, hvis du ikke vil knytte til en modeltype
         )
+
         await ai_model_service.create_model(session_sql, model)
+
 
         return {"message": "Fuck ja, du har lavet din egen AI min ven (NERD) og den ligger lige her: ", "path": output_path}
     except Exception as e:

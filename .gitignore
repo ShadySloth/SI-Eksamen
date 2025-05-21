@@ -36,4 +36,8 @@ Thumbs.db
 db
 images/
 /.env
+
+results/
+
 /blob
+
