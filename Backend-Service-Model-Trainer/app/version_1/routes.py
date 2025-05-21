@@ -1,6 +1,6 @@
 #declares the route for this api version if included in main
 from fastapi import APIRouter
-from . import ai_models_controller, health_controller, ai_model_type_controller, ai_test_trainer
+from . import ai_models_controller, health_controller, ai_model_type_controller
 
 router = APIRouter()
 
