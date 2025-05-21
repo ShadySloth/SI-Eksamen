@@ -7,6 +7,8 @@
     <!-- input field to create new label and add to labellist-->
     <input type="text" [(ngModel)]="newLabel" placeholder="New Label">
     <button (click)="addLabel()">Add</button>
+      <button class="toolButton" [disabled]="!deleteMode" (click)="toggleDeleteMode()">Draw</button>
+      <button class="toolButton" [disabled]="deleteMode" (click)="toggleDeleteMode()">Delete</button>
   </div>
 </div>
 <div class="image-page">

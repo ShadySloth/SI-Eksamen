@@ -21,7 +21,7 @@ export class ImagePageComponent implements OnInit {
   activeLabel: Label | null = null;
   segmentations: Segmentation[] = [];
 
-  skipNextDraw = true;
+  deleteMode = false;
   drawing = false;
   startX = 0;
   startY = 0;
@@ -98,6 +98,8 @@ export class ImagePageComponent implements OnInit {
     this.selectedLabels = this.labelList.filter(label =>
       label.images?.some(image => image.id === img.id)
     );
+
+    this.activeLabel = this.selectedLabels[0] || null;
     // Also load segmentations for current active label
     this.loadSegmentations();
   }
@@ -155,10 +157,8 @@ export class ImagePageComponent implements OnInit {
 
 
   startDraw(event: MouseEvent) {
-    if (this.skipNextDraw) {
-      this.skipNextDraw = false;
-      return;
-    }
+    if (this.deleteMode) return;
+    if (!this.activeLabel) return;
 
     const bounds = this.imageRef.nativeElement.getBoundingClientRect();
     this.startX = event.clientX - bounds.left;
@@ -194,7 +194,6 @@ export class ImagePageComponent implements OnInit {
 
     this.finalCoords = { x1, y1, x2, y2 };
     this.saveCoordinates(this.finalCoords);
-    this.skipNextDraw = true;
   }
 
   private async saveCoordinates(finalCoords: { x1: number; y1: number; x2: number; y2: number }) {
@@ -212,8 +211,8 @@ export class ImagePageComponent implements OnInit {
   }
 
   async removeSegmentation(segmentation: Segmentation, event: MouseEvent): Promise<void> {
+    if (!this.deleteMode) return;
     event.stopPropagation();
-    this.skipNextDraw = true;
 
     const confirmDelete = confirm('Remove this segmentation?');
     if (!confirmDelete) return;
@@ -239,5 +238,9 @@ export class ImagePageComponent implements OnInit {
       this.pagedImages.page += 1;
       this.fetchImages(this.pagedImages.page, this.pagedImages.pageSize);
     }
+  }
+
+  toggleDeleteMode() {
+    this.deleteMode = !this.deleteMode;
   }
 }

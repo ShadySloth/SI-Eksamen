@@ -145,3 +145,16 @@
 .image-list-horizontal {
   padding-bottom: 3rem; /* space for pagination */
 }
+
+.toolButton {
+  margin-left: 0.5rem;
+}
+
+.toolButton:disabled {
+  background-color: #e0f0ff;
+  color: #0057b8;
+  border: 1px solid #0057b8;
+  border-radius: 3px;
+  opacity: 1;
+  cursor: not-allowed;
+}
