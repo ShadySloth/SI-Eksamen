@@ -19,7 +19,7 @@ public interface IImageService
     /// <param name="page"></param>
     /// <param name="pageSize"></param>
     /// <returns>Array of ImageDto</returns>
-    Task<ImageDto[]> GetImages(int page, int pageSize);
+    Task<PagedResult<ImageDto>> GetImages(int page, int pageSize);
     
     Task<ImageDto[]> GetImagesByLabel(Guid labelId);
     

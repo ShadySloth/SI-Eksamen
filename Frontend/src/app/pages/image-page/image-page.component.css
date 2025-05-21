@@ -127,3 +127,21 @@
   background-color: rgba(0, 123, 255, 0.2);
   cursor: pointer;
 }
+
+.pagination-controls {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  background: #fff;
+  padding: 0.5rem 0;
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.05);
+}
+
+.image-list-horizontal {
+  padding-bottom: 3rem; /* space for pagination */
+}
