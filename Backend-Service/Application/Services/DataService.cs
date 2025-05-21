@@ -85,12 +85,14 @@ public class DataService : IDataService
             Names = labels.Select(l => l.Name).ToArray()
         };
 
-        var yamlPath = $"../blob/datasets/{dataSetResult.DataSetName}/data.yaml";
+        var yamlPath = $"../temp/datasets/{dataSetResult.DataSetName}/data.yaml";
         await WriteYamlConfig(config, yamlPath);
         
         // Zip the dataset
-        ZipFile.CreateFromDirectory($"../blob/datasets/{dataSetResult.DataSetName}",
-            $"../blob/datasets/{dataSetResult.DataSetName}.zip");
+        ZipFile.CreateFromDirectory($"../temp/datasets/{dataSetResult.DataSetName}",
+            $"../blob/{dataSetResult.DataSetName}.zip");
+        
+        File.Delete("../temp");
 
         return dataSetResult;
     }
@@ -119,8 +121,8 @@ public class DataService : IDataService
             foreach (var (segment, labelIndex) in group)
             {
                 var fileName = $"{segment.ImageId}_{GenerateRandomString(32)}".Replace('.', '_');
-                var labelDir = $"../blob/datasets/{dataSetName}/{setName}/labels";
-                var imageDir = $"../blob/datasets/{dataSetName}/{setName}/images";
+                var labelDir = $"../temp/datasets/{dataSetName}/{setName}/labels";
+                var imageDir = $"../temp/datasets/{dataSetName}/{setName}/images";
                 if (!Directory.Exists(labelDir))
                     Directory.CreateDirectory(labelDir);
                 if (!Directory.Exists(imageDir))
@@ -144,9 +146,9 @@ public class DataService : IDataService
     private static async Task WriteSegmentToFile(SegmentationDto segment, string fileName, string dataSetName,
         int labelIndex)
     {
-        var train = $"../blob/datasets/{dataSetName}/train/labels";
-        var test = $"../blob/datasets/{dataSetName}/test/labels";
-        var valid = $"../blob/datasets/{dataSetName}/valid/labels";
+        var train = $"../temp/datasets/{dataSetName}/train/labels";
+        var test = $"../temp/datasets/{dataSetName}/test/labels";
+        var valid = $"../temp/datasets/{dataSetName}/valid/labels";
 
         if (!Directory.Exists(train))
             Directory.CreateDirectory(train);
@@ -162,7 +164,7 @@ public class DataService : IDataService
     private static async Task WriteImageToFile(string imageBase64, string fileName, string dataSetName,
         string originalFileName)
     {
-        var directoryPath = $"../blob/datasets/{dataSetName}/train/images";
+        var directoryPath = $"../temp/datasets/{dataSetName}/train/images";
 
         if (!Directory.Exists(directoryPath))
             Directory.CreateDirectory(directoryPath);
