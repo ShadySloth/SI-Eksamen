@@ -14,16 +14,17 @@ public class DataService : IDataService
 {
     private readonly IDataRepository _dataRepository;
     private readonly IImageService _imageService;
-
+    private readonly ILabelService _labelService;
     private readonly ISegmentationService _segmentationService;
 
     private readonly IMapper _mapper;
 
     public DataService(IDataRepository dataRepository, IMapper mapper, IImageService imageService,
-        ISegmentationService segmentationService)
+        ISegmentationService segmentationService, ILabelService labelService)
     {
         _dataRepository = dataRepository;
         _segmentationService = segmentationService;
+        _labelService = labelService;
         _imageService = imageService;
         _mapper = mapper;
     }
@@ -33,16 +34,18 @@ public class DataService : IDataService
         // Create dataset files and save them to blob or local storage
         var collectedSegments = new List<(SegmentationDto segmentationDto, int labelIndex)>();
         var images = new List<ImageDto>();
+        var labels = new List<LabelDto>();
         foreach (var label in dataSetDto.LabelsToBeUsed)
         {
             images.AddRange(_imageService.GetImagesByLabel(label).Result); 
+            labels.Add(_labelService.GetLabel(label).Result);
         }
 
-        foreach (var (label, labelIndex) in dataSetDto.LabelsToBeUsed.Select((l, i) => (l, i)))
+        foreach (var (label, labelIndex) in labels.Select((l, i) => (l, i)))
         {
             foreach (var image in images)
             {
-                var segments = await _segmentationService.GetSegmentationsByImageAndLabel(image.Id, label);
+                var segments = await _segmentationService.GetSegmentationsByImageAndLabel(image.Id, label.Id);
                 collectedSegments.AddRange(segments.Select(segment => (segment, labelIndex)));
             }
         }
@@ -79,7 +82,7 @@ public class DataService : IDataService
             Val = "../valid/images",
             Test = "../test/images",
             Nc = dataSetDto.LabelsToBeUsed.Length,
-            Names = dataSetDto.LabelsToBeUsed.Select(l => l.Name).ToArray()
+            Names = labels.Select(l => l.Name).ToArray()
         };
 
         var yamlPath = $"../blob/datasets/{dataSetResult.DataSetName}/data.yaml";
