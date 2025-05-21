@@ -58,8 +58,8 @@ public class DataService : IDataService
             .ToList();
 
         var total = grouped.Count;
-        var trainCount = (int)(total * 0.9);
-        var validCount = (int)(total * 0.08);
+        var trainCount = (int)(total * 0.6);
+        var validCount = (int)(total * 0.2);
         var testCount = total - trainCount - validCount;
 
         var trainGroup = grouped.Take(trainCount);
