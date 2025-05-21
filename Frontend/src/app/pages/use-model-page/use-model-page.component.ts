@@ -38,9 +38,6 @@ export class UseModelPageComponent implements OnInit {
       };
 
       reader.readAsDataURL(file);
-
-      // Optional: upload the file to backend here
-      // this.imageService.upload(file).then(...)
     }
   }
 
@@ -55,7 +52,7 @@ export class UseModelPageComponent implements OnInit {
 
       const reader = new FileReader();
       reader.onload = () => {
-        this.uploadedImageUrl = reader.result as string; // Sets it as base64 for preview
+        this.uploadedImageUrl = reader.result as string;
       };
       reader.readAsDataURL(imageBlob);
     } catch (error) {
