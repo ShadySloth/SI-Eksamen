@@ -37,4 +37,6 @@ db
 images/
 /.env
 
+results/
+
 /blob

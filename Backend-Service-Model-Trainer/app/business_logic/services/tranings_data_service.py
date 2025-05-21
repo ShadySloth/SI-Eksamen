@@ -26,7 +26,7 @@ async def train_model_on_set(map_key: str, epochs: int, imgsz: int, session: Clo
 
         mock_data = {
             "data_yaml_path": yaml_path,
-            "epochs": 5,
+            "epochs": epochs,
             "imgsz": 416,
             "output_dir": "results"
         }
@@ -36,4 +36,4 @@ async def train_model_on_set(map_key: str, epochs: int, imgsz: int, session: Clo
         print(f"Trænet model gemt her: {model_path}")
 
         # Returnér stien
-        return str(yaml_path)
+        return str(model_path)
