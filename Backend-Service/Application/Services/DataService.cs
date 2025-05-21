@@ -61,7 +61,7 @@ public class DataService : IDataService
 
         var trainGroup = grouped.Take(trainCount);
         var validGroup = grouped.Skip(trainCount).Take(validCount);
-        var testGroup = grouped.Skip(trainCount + validCount);
+        var testGroup = grouped.Skip(trainCount + validCount).Take(testCount);
 
         await WriteSet(trainGroup, "train", dataSetDto.DataSet.DataSetName);
         await WriteSet(validGroup, "valid", dataSetDto.DataSet.DataSetName);
