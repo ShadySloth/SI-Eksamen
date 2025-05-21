@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { CreateDataSet, Dataset, Label } from 'src/app/models';
+import { CreateDataSet, Dataset, Label, Training } from 'src/app/models';
 import { DatasetService } from 'src/app/services/dataset.service';
 import { LabelService } from 'src/app/services/label.service';
+import { TrainingService } from 'src/app/services/training.service';
 
 @Component({
   selector: 'app-dataset-page',
@@ -15,7 +16,13 @@ export class DatasetPageComponent implements OnInit {
   trainingSetName: string = '';
   savedTrainingSets : Dataset[] = [];
 
+  trainingName: string = '';
+  epochs: number = 10;
+  imageSize: number = 224;
+  selectedDataSet: Dataset | null = null;
+
   constructor(private datasetService: DatasetService,
+              private trainingService: TrainingService,
               private labelService: LabelService) { }
 
   ngOnInit(): void {
@@ -67,8 +74,6 @@ export class DatasetPageComponent implements OnInit {
       return;
     }
 
-    // TODO: Logic to save the training set
-    console.log('Selected Labels:', this.selectedLabels);
     const newDataset: Dataset = {
       dataSetName: this.trainingSetName,
     }
@@ -81,5 +86,33 @@ export class DatasetPageComponent implements OnInit {
     this.savedTrainingSets.push(datasetReponse!);
     this.selectedLabels = [];
     this.trainingSetName = '';
+  }
+
+  selectDataSet(dataset: Dataset) {
+    this.selectedDataSet = dataset;
+  }
+
+  canTrain(): boolean {
+    return (
+      this.selectedDataSet !== null &&
+      this.trainingName.trim().length > 0 &&
+      this.epochs > 0 &&
+      this.imageSize > 0
+    );
+  }
+
+  async startTraining() {
+    if (!this.canTrain()) return;
+
+    const payload : Training = {
+      new_model_name: this.trainingName,
+      selected_model: "MAKE SOMETING TO REPLACE THIS",
+      training_data_name: this.selectedDataSet!.dataSetName,
+      epochs: this.epochs,
+      image_size: this.imageSize
+    };
+
+    await this.trainingService.trainModel(payload)
+    alert('Training started successfully!');
   }
 }

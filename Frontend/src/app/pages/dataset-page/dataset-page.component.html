@@ -26,13 +26,44 @@
     </div>
   </div>
 
-  <!-- Right: List of Saved Sets -->
+  <!-- Middle: Saved Training Sets -->
   <div class="saved-sets-container">
     <h2>Saved Training Sets</h2>
     <ul>
-      <li *ngFor="let set of savedTrainingSets">
+      <li *ngFor="let set of savedTrainingSets"
+        (click)="selectDataSet(set)"
+        [class.active]="selectedDataSet?.dataSetName === set.dataSetName"
+      >
         <strong>{{ set.dataSetName }}</strong>
       </li>
     </ul>
+  </div>
+
+  <!-- Right: Training Config -->
+  <div class="training-config-container">
+    <h2>Configure Training</h2>
+
+    <div class="config-field">
+      <label>Selected Set:</label>
+      <span *ngIf="selectedDataSet">{{ selectedDataSet.dataSetName }}</span>
+      <span *ngIf="!selectedDataSet" class="dim">None selected</span>
+    </div>
+
+    <div class="config-field">
+      <label for="trainingName">Training Name</label>
+      <input id="trainingName" type="text" [(ngModel)]="trainingName" />
+    </div>
+
+    <div class="config-field">
+      <label for="epochs">Epochs</label>
+      <input id="epochs" type="number" [(ngModel)]="epochs" />
+    </div>
+
+    <div class="config-field">
+      <label for="imageSize">Image Size</label>
+      <input id="imageSize" type="number" [(ngModel)]="imageSize" />
+    </div>
+
+    <button (click)="startTraining()" [disabled]="!canTrain()">Start Training</button>
   </div>
 </div>

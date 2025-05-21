@@ -36,3 +36,11 @@ export interface CreateDataSet {
   dataSet: Dataset;
   labelsToBeUsed: string[];
 }
+
+export interface Training {
+  new_model_name: string;
+  selected_model: string;
+  training_data_name: string;
+  epochs: number;
+  image_size: number;
+}
