@@ -1,0 +1,69 @@
+
+
+<div class="training-page-layout">
+  <!-- Left: Create New Training Set -->
+  <div class="training-set-container">
+    <h2>Create Training Set</h2>
+
+    <div class="form-header">
+      <input
+        type="text"
+        placeholder="Training set name"
+        [(ngModel)]="trainingSetName"
+      />
+      <button (click)="saveTrainingSet()">Save</button>
+    </div>
+
+    <div class="label-grid">
+      <div
+        class="label-card"
+        *ngFor="let label of labels"
+        [class.active]="isSelected(label)"
+        (click)="selectLabel(label)"
+      >
+        {{ label.name }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Middle: Saved Training Sets -->
+  <div class="saved-sets-container">
+    <h2>Saved Training Sets</h2>
+    <ul>
+      <li *ngFor="let set of savedTrainingSets"
+        (click)="selectDataSet(set)"
+        [class.active]="selectedDataSet?.dataSetName === set.dataSetName"
+      >
+        <strong>{{ set.dataSetName }}</strong>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Right: Training Config -->
+  <div class="training-config-container">
+    <h2>Configure Training</h2>
+
+    <div class="config-field">
+      <label>Selected Set:</label>
+      <span *ngIf="selectedDataSet">{{ selectedDataSet.dataSetName }}</span>
+      <span *ngIf="!selectedDataSet" class="dim">None selected</span>
+    </div>
+
+    <div class="config-field">
+      <label for="trainingName">Training Name</label>
+      <input id="trainingName" type="text" [(ngModel)]="trainingName" />
+    </div>
+
+    <div class="config-field">
+      <label for="epochs">Epochs</label>
+      <input id="epochs" type="number" [(ngModel)]="epochs" />
+    </div>
+
+    <div class="config-field">
+      <label for="imageSize">Image Size</label>
+      <input id="imageSize" type="number" [(ngModel)]="imageSize" />
+    </div>
+
+    <button (click)="startTraining()" [disabled]="!canTrain()">Start Training</button>
+  </div>
+</div>

@@ -1,0 +1,144 @@
+.training-page-layout {
+  display: flex;
+  gap: 2rem;
+  padding: 2rem;
+  align-items: flex-start;
+  flex-wrap: wrap; /* Optional: makes it responsive */
+}
+
+.training-set-container {
+  flex: 2;
+  max-width: 600px;
+  padding: 2rem;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.training-set-container h2 {
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.form-header {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  justify-content: center;
+}
+
+.form-header input {
+  flex: 1;
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+
+.form-header button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.label-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 1rem;
+}
+
+.label-card {
+  background-color: #f0f0f0;
+  padding: 0.75rem;
+  text-align: center;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.label-card:hover {
+  background-color: #dfefff;
+}
+
+.label-card.active {
+  background-color: #cce5ff;
+  font-weight: bold;
+}
+
+
+/* New saved sets container */
+.saved-sets-container {
+  flex: 1;
+  min-width: 250px;
+  padding: 2rem;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.saved-sets-container h2 {
+  margin-top: 0;
+}
+
+.saved-sets-container ul {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0;
+}
+
+.saved-sets-container li {
+  background-color: #fff;
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin-bottom: 0.5rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.saved-sets-container li.active {
+  background-color: #d0eaff;
+  font-weight: bold;
+}
+
+.saved-sets-container li:hover {
+  background-color: #eef6ff;
+  cursor: pointer;
+}
+
+.training-config-container {
+  flex: 1;
+  min-width: 250px;
+  padding: 2rem;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.training-config-container h2 {
+  margin-top: 0;
+}
+
+.config-field {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.config-field label {
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+}
+
+.config-field input {
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+
+.training-config-container button {
+  padding: 0.75rem 1.25rem;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+.dim {
+  color: #aaa;
+  font-style: italic;
+}

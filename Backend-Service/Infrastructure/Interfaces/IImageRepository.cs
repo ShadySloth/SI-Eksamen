@@ -1,4 +1,5 @@
-﻿using Backend_Service.Domain.Entities;
+﻿using Backend_Service.Domain.DTOs;
+using Backend_Service.Domain.Entities;
 
 namespace Backend_Service.Infrastructure.Interfaces;
 
@@ -12,7 +13,10 @@ public interface IImageRepository
     /**
      * Gets a paginated list of images.
      */
-    Task<Image[]> GetImages(int page, int pageSize);
+    Task<PagedResult<Image>> GetImages(int page, int pageSize);
+    
+    /// Gets images by label id.
+    Task<Image[]> GetImagesByLabel(Guid labelId);
     
     /**
      * Uploads an image.

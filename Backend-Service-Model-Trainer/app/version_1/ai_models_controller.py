@@ -74,7 +74,7 @@ async def run_model_on_img(
         filename="detected.png"
     )
 
-@router.post("/train/")
+@router.get("/train/", response_class=FileResponse)
 async def train_model(request: TrainingRequest, session_sql: AsyncSession = Depends(get_session)):
     # Mock CloudSession – i rigtig cloud ville du tilføje auth, bucket info etc.
     session_cloud = CloudSession()

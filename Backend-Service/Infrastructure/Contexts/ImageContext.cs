@@ -11,6 +11,8 @@ public class ImageContext : DbContext
     
     public DbSet<Image> Images { get; set; }
     public DbSet<Label> Labels { get; set; }
+    public DbSet<Segmentation> Segmentations { get; set; }
+    public DbSet<DataSet> DataSets { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -26,5 +28,26 @@ public class ImageContext : DbContext
         modelBuilder.Entity<Label>()
             .Property(l => l.Name)
             .HasMaxLength(50);
+        modelBuilder.Entity<Label>()
+            .HasMany(l => l.Images)
+            .WithMany(i => i.Labels);
+        
+        //Segmentation
+        modelBuilder.Entity<Segmentation>()
+            .HasOne(s => s.Label)
+            .WithMany()
+            .HasForeignKey(s => s.LabelId);
+        modelBuilder.Entity<Segmentation>()
+            .HasOne(s => s.Image)
+            .WithMany()
+            .HasForeignKey(s => s.ImageId);
+        
+        //DataSet
+        modelBuilder.Entity<DataSet>()
+            .Property(d => d.DataSetName)
+            .HasMaxLength(50);
+        modelBuilder.Entity<DataSet>()
+            .HasIndex(d => d.DataSetName)
+            .IsUnique();
     }
 }

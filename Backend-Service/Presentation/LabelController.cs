@@ -32,7 +32,8 @@ public class LabelController : ControllerBase
     /// </summary>
     /// <param name="labelId"></param>
     /// <returns></returns>
-    public async Task<ActionResult<LabelDto>> GetLabell(Guid labelId)
+    [HttpGet("{labelId}")]
+    public async Task<ActionResult<LabelDto>> GetLabel(Guid labelId)
     {
         var label = await _labelService.GetLabel(labelId);
 
@@ -44,11 +45,12 @@ public class LabelController : ControllerBase
     /// </summary>
     /// <param name="label"></param>
     /// <returns></returns>
+    [HttpPost]
     public async Task<ActionResult<LabelDto>> CreateLabel([FromBody] LabelDto label)
     {
         var createdLabel = await _labelService.CreateLabel(label);
 
-        return CreatedAtAction(nameof(GetLabell), new { labelId = createdLabel.Id }, createdLabel);
+        return CreatedAtAction(nameof(GetLabel), new { labelId = createdLabel.Id }, createdLabel);
     }
     
     /// <summary>
@@ -56,6 +58,7 @@ public class LabelController : ControllerBase
     /// </summary>
     /// <param name="label"></param>
     /// <returns></returns>
+    [HttpPut]
     public async Task<ActionResult<LabelDto>> UpdateLabel([FromBody] LabelDto label)
     {
         var updatedLabel = await _labelService.UpdateLabel(label);
@@ -68,7 +71,8 @@ public class LabelController : ControllerBase
     /// </summary>
     /// <param name="labelId"></param>
     /// <returns></returns>
-    public async Task<ActionResult> DeleteLabel(Guid labelId)
+    [HttpDelete("{labelId}")]
+    public async Task<IActionResult> DeleteLabel(Guid labelId)
     {
         await _labelService.DeleteLabel(labelId);
 

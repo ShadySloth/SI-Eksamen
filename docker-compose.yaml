@@ -11,6 +11,10 @@
       POSTGRES_DATABASE: ${POSTGRES_DATABASE}
     ports:
       - "5001:8080"
+    volumes:
+      - ./blob:/blob
+      - ./Backend-Service/Images:/Images
+  
   postgresDb:
     image: postgres:latest
     ports:

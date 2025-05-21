@@ -27,9 +27,30 @@ public class ImageService : IImageService
         return imageDto;
     }
 
-    public async Task<ImageDto[]> GetImages(int page, int pageSize)
+    public async Task<PagedResult<ImageDto>> GetImages(int page, int pageSize)
     {
-        var images = await _imageRepository.GetImages(page, pageSize);
+        var pagedImages = await _imageRepository.GetImages(page, pageSize);
+        var imageDtos = _mapper.Map<ImageDto[]>(pagedImages.Items);
+        
+        foreach (var imageDto in imageDtos)
+        {
+            imageDto.FileBase64 = GetFile(imageDto.FileName);
+        }
+        
+        var pagedResult = new PagedResult<ImageDto>
+        {
+            Items = imageDtos,
+            TotalCount = pagedImages.TotalCount,
+            Page = pagedImages.Page,
+            PageSize = pagedImages.PageSize
+        };
+
+        return pagedResult;
+    }
+
+    public async Task<ImageDto[]> GetImagesByLabel(Guid labelId)
+    {
+        var images = await _imageRepository.GetImagesByLabel(labelId);
         var imageDtos = _mapper.Map<ImageDto[]>(images);
         
         foreach (var imageDto in imageDtos)
