@@ -45,13 +45,6 @@ public class SegmentationService : ISegmentationService
         return segmentationDtos;
     }
 
-    public async Task<SegmentationDto[]> GetSegmentationsByImageAndLabel(Guid imageId, Guid labelId)
-    {
-        var segmentations = await _segmentationRepository.GetSegmentationsByImageAndLabel(imageId, labelId);
-        var segmentationDtos = _mapper.Map<SegmentationDto[]>(segmentations);
-        return segmentationDtos;
-    }
-
     public async Task<SegmentationDto> CreateSegmentation(SegmentationDto segmentation)
     {
         var segmentationToCreate = _mapper.Map<Segmentation>(segmentation);

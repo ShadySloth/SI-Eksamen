@@ -50,14 +50,6 @@ public class SegmentationRepository : ISegmentationRepository
         return segmentations;
     }
 
-    public async Task<Segmentation[]> GetSegmentationsByImageAndLabel(Guid imageId, Guid labelId)
-    {
-        var segmentations = await _context.Segmentations
-            .Where(s => s.ImageId == imageId && s.LabelId == labelId)
-            .ToArrayAsync();
-        return segmentations;
-    }
-
     public async Task<Segmentation> CreateSegmentation(Segmentation segmentation)
     {
         var createdSegmentation = await _context.Segmentations.AddAsync(segmentation);
