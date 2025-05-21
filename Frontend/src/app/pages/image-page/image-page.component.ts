@@ -93,7 +93,6 @@ export class ImagePageComponent implements OnInit {
     this.selectedLabels = this.labelList.filter(label =>
       label.images?.some(image => image.id === img.id)
     );
-
     // Also load segmentations for current active label
     this.loadSegmentations();
   }
