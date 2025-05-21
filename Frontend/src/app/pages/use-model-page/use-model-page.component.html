@@ -17,8 +17,8 @@
 
     <div class="model-selection" *ngIf="uploadedImageUrl">
       <label for="modelSelect">Choose Model:</label>
-      <select id="modelSelect" [(ngModel)]="selectedModel">
-        <option *ngFor="let model of availableModels" [value]="model">
+      <select id="modelSelect" [(ngModel)]="selectedModel!">
+        <option *ngFor="let model of availableModels" [value]="model.id">
           {{ model.name }}
         </option>
       </select>

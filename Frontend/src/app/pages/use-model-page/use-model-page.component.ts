@@ -9,8 +9,9 @@ import { TrainedModelService } from 'src/app/services/trained-model.service';
 })
 export class UseModelPageComponent implements OnInit {
   uploadedImageUrl: string | null = null;
+  imageFile: File | null = null;
   availableModels: TrainedModel[] = [];
-  selectedModel: string = '';
+  selectedModel: number | null = null;
 
   constructor(private trainedModelService: TrainedModelService) {}
 
@@ -31,7 +32,7 @@ export class UseModelPageComponent implements OnInit {
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
       const reader = new FileReader();
-
+      this.imageFile = file;
       reader.onload = () => {
         this.uploadedImageUrl = reader.result as string;
       };
@@ -43,13 +44,22 @@ export class UseModelPageComponent implements OnInit {
     }
   }
 
-  runModel(): void {
-    if (!this.uploadedImageUrl || !this.selectedModel) return;
+  async runModel() {
+    if (!this.imageFile || !this.selectedModel) return;
 
-    console.log('Running model:', this.selectedModel, 'on image');
+    const formData = new FormData();
+    formData.append('uploaded_file', this.imageFile);
 
-    // Your backend logic here:
-    // this.modelService.runModel(this.selectedModel, this.uploadedImageFile)
-    //   .then(result => this.result = result);
+    try {
+      const imageBlob = await this.trainedModelService.useTrainedModel(this.selectedModel, formData);
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.uploadedImageUrl = reader.result as string; // Sets it as base64 for preview
+      };
+      reader.readAsDataURL(imageBlob);
+    } catch (error) {
+      console.error('Failed to run model:', error);
+    }
   }
 }

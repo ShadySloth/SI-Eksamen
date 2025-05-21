@@ -17,7 +17,11 @@ export class TrainedModelService {
     return await firstValueFrom(this.httpClient.get<TrainedModel[]>(this.baseUrl + "/api/ai/models"))
   }
 
-  async useTrainedModel(RENAME_ME: any) {
-    return await firstValueFrom(this.httpClient.post<any>(this.baseUrl + "/api/ai/CHANGE_ME", RENAME_ME))
+  async useTrainedModel(idOfModel: number, image: FormData) {
+    return await firstValueFrom(
+      this.httpClient.post(this.baseUrl + "/api/ai/models/test/" + idOfModel, image, {
+        responseType: 'blob' // 👈 important
+      })
+    );
   }
 }
