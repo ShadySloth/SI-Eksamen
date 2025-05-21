@@ -4,3 +4,4 @@ sqlmodel
 aiomysql
 sqlalchemy
 numpy
+ultralytics

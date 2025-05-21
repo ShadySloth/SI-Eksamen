@@ -8,3 +8,5 @@ router.include_router(ai_model_type_controller.router, prefix="/ai/models/type",
 router.include_router(ai_models_controller.router, prefix="/ai/models", tags=["AI Models"])
 router.include_router(health_controller.router, prefix="/health", tags=["Health"])
 
+
+
