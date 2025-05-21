@@ -1,14 +1,93 @@
-<button (click)="triggerFileSelect()">Upload Image</button>
-<input type="file" #fileInput style="display: none" (change)="onFileSelected($event)">
-
-<!-- Show selected image -->
-<div *ngIf="selectedImage">
-    <h3>{{ selectedImage.fileName }}</h3>
-    <img [src]="'data:image/png;base64,' + selectedImage.fileBase64" alt="Selected Image" style="max-width: 300px;">
+<div>
+  <div>
+    <button (click)="triggerFileSelect()">Upload Image</button>
+    <input type="file" #fileInput style="display: none" (change)="onFileSelected($event)">
+  </div>
+    <div class="add-label">
+    <!-- input field to create new label and add to labellist-->
+    <input type="text" [(ngModel)]="newLabel" placeholder="New Label">
+    <button (click)="addLabel()">Add</button>
+  </div>
 </div>
+<div class="image-page">
+  <!-- Left Vertical List -->
+  <div class="left-side-list">
+    <div *ngFor="let label of labelList">
+      <label>
+        <input
+          type="checkbox"
+          [value]="label"
+          [checked]="isLabelSelected(label)"
+          (change)="onLabelToggle(label, $event)"
+        />
+        {{ label.name }}
+      </label>
+    </div>
+  </div>
 
-<!-- List of uploaded images -->
-<div *ngFor="let img of imageList">
-    <h4>{{ img.fileName }}</h4> <img [src]="'data:image/png;base64,' + img.fileBase64" alt="Image" style="max-width: 200px;">
+
+  <!-- Center Area -->
+  <div class="center-part">
+    <!-- Top part: Selected image -->
+    <div class="selected-image" *ngIf="selectedImage">
+      <div class="image-container" (mousedown)="startDraw($event)" (mousemove)="onDraw($event)" (mouseup)="endDraw()">
+        <img
+          #imageRef
+          [src]="'data:image/png;base64,' + selectedImage.fileBase64"
+          alt="Selected Image"
+          draggable="false"
+        />
+
+        <!-- Show each segmentation for current image and label -->
+        <div
+          *ngFor="let seg of segmentations"
+          class="segmentation-box"
+          [ngStyle]="{
+            left: seg.firstCoordinateX + 'px',
+            top: seg.firstCoordinateY + 'px',
+            width: (seg.secondCoordinateX - seg.firstCoordinateX) + 'px',
+            height: (seg.secondCoordinateY - seg.firstCoordinateY) + 'px'
+          }"
+          (click)="removeSegmentation(seg, $event)"
+          title="Click to remove"
+        >
+        </div>
+        <div
+          *ngIf="drawing"
+          class="selection-rect"
+          [ngStyle]="{
+      left: rect.left + 'px',
+      top: rect.top + 'px',
+      width: rect.width + 'px',
+      height: rect.height + 'px'
+    }"
+        ></div>
+        <div *ngIf="!selectedImage" class="no-image-placeholder">
+          <p>Select an image to begin annotation.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom part: Horizontal image list -->
+    <div class="image-list-horizontal">
+      <div *ngFor="let img of imageList" class="image-item" (click)="selectImage(img)">
+        <h4>{{ img.fileName }}</h4>
+        <img [src]="'data:image/png;base64,' + img.fileBase64" alt="Image">
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Vertical List -->
+  <div class="right-side-list">
+  <h4>Selected Labels</h4>
+  <ul>
+    <li
+      *ngFor="let label of selectedLabels"
+      (click)="onPickRightLabel(label)"
+      [class.active]="activeLabel?.id === label.id"
+    >
+      {{ label.name }}
+    </li>
+  </ul>
 </div>
-
+</div>

@@ -40,6 +40,13 @@ public class ImageController : ControllerBase
         return Ok(images);
     }
     
+    [HttpGet("label/{labelId}")]
+    public async Task<ActionResult<ImageDto[]>> GetImagesByLabel(Guid labelId)
+    {
+        var images = await _imageService.GetImagesByLabel(labelId);
+        return Ok(images);
+    }
+    
     /// <summary>
     /// Uploads an image.
     /// </summary>

@@ -17,7 +17,7 @@ public class LabelRepository : ILabelRepository
     
     public async Task<Label[]> GetLabels()
     {
-        var labels = await _context.Labels.ToArrayAsync();
+        var labels = await _context.Labels.Include(label => label.Images).ToArrayAsync();
 
         return labels;
     }
@@ -47,13 +47,41 @@ public class LabelRepository : ILabelRepository
         return createdLabel.Entity;
     }
 
-    public async Task<Label> UpdateLabel(Label label)
+public async Task<Label> UpdateLabel(Label label)
+{
+    var existingLabel = await _context.Labels
+        .Include(l => l.Images)
+        .FirstOrDefaultAsync(l => l.Id == label.Id);
+
+    if (existingLabel == null)
+        throw new Exception("Label not found");
+
+    // Update scalar properties
+    existingLabel.Name = label.Name;
+
+    // Sync Images collection
+    // 1. Remove images no longer in the new list
+    var incomingImageIds = label.Images.Select(i => i.Id).ToHashSet();
+    existingLabel.Images.RemoveAll(img => !incomingImageIds.Contains(img.Id));
+
+    // 2. Add or update images from the new list
+    foreach (var image in label.Images)
     {
-        var updatedLabel = _context.Labels.Update(label);
-        await _context.SaveChangesAsync();
-        
-        return updatedLabel.Entity;
+        var existingImage = existingLabel.Images.FirstOrDefault(i => i.Id == image.Id);
+        if (existingImage != null)
+        {
+            continue;
+        }
+        else
+        {
+            // Attach the new image
+            existingLabel.Images.Add(image);
+        }
     }
+
+    await _context.SaveChangesAsync();
+    return existingLabel;
+}
 
     public async Task DeleteLabel(Guid labelId)
     {
