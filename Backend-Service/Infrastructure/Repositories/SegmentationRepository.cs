@@ -22,13 +22,22 @@ public class SegmentationRepository : ISegmentationRepository
 
         return segmentation!;
     }
+    
+    public async Task<Segmentation[]> GetSegmentationsByImageAndLabel(Guid imageId, Guid labelId)
+    {
+        var segmentations = await _context.Segmentations
+            .Where(s => s.ImageId == imageId && s.LabelId == labelId)
+            .ToArrayAsync();
+
+        return segmentations;
+    }
 
     public async Task<Segmentation[]> GetSegmentationsByLabel(Guid labelId)
     {
         var segmentations = await _context.Segmentations
             .Where(s => s.LabelId == labelId)
             .ToArrayAsync();
-        
+
         return segmentations;
     }
 
@@ -56,12 +65,9 @@ public class SegmentationRepository : ISegmentationRepository
         return updatedSegmentation.Entity;
     }
 
-    public async Task DeleteSegmentation(Guid segmentationId)
+    public async Task DeleteSegmentation(Segmentation segmentation)
     {
-        var segmentation = await _context.Segmentations
-            .FirstOrDefaultAsync(s => s.Id == segmentationId);
-        _context.Segmentations.Remove(segmentation!);
-        
+        _context.Segmentations.Remove(segmentation);
         await _context.SaveChangesAsync();
     }
 }

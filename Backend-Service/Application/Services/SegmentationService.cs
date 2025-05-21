@@ -17,6 +17,13 @@ public class SegmentationService : ISegmentationService
         _mapper = mapper;
     }
 
+    public async Task<SegmentationDto[]> GetSegmentationsByImageAndLabel(Guid imageId, Guid labelId)
+    {
+        var segmentations = await _segmentationRepository.GetSegmentationsByImageAndLabel(imageId, labelId);
+        var segmentationDtos = _mapper.Map<SegmentationDto[]>(segmentations);
+        return segmentationDtos;
+    }
+
     public async Task<SegmentationDto> GetSegmentationById(Guid segmentationId)
     {
         var segmentation = await _segmentationRepository.GetSegmentationById(segmentationId);
@@ -54,9 +61,9 @@ public class SegmentationService : ISegmentationService
         return updatedSegmentationDto;
     }
 
-    public Task DeleteSegmentation(Guid segmentationId)
+    public async Task DeleteSegmentation(Guid segmentationId)
     {
-        _segmentationRepository.DeleteSegmentation(segmentationId);
-        return Task.CompletedTask;
+        var segmentation = await _segmentationRepository.GetSegmentationById(segmentationId);
+        await _segmentationRepository.DeleteSegmentation(segmentation);
     }
 }

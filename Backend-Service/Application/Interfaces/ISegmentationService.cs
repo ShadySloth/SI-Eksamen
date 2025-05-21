@@ -5,7 +5,7 @@ namespace Backend_Service.Application.Interfaces;
 public interface ISegmentationService
 {
     public Task<SegmentationDto> GetSegmentationById(Guid segmentationId);
-    
+    public Task<SegmentationDto[]> GetSegmentationsByImageAndLabel(Guid imageId, Guid labelId);
     public Task<SegmentationDto[]> GetSegmentationsByLabel(Guid labelId);
     
     public Task<SegmentationDto[]> GetSegmentationsByImage(Guid imageId);
