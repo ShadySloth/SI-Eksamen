@@ -1,10 +1,14 @@
 # Base image
 FROM python:3.11-slim
 
+# Installer systempakker
+#libgl1 bruges af open cv i bla yolo trainings
+RUN apt-get update && apt-get install -y libgl1 && rm -rf /var/lib/apt/lists/*
+
 # Set workdir
 WORKDIR /app
 
-# Install dependencies
+# Install Python dependencies
 COPY req.txt .
 RUN pip install --no-cache-dir -r req.txt
 

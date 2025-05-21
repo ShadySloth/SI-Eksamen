@@ -4,12 +4,12 @@ from typing import List
 from fastapi import APIRouter, Depends
 from sqlmodel.ext.asyncio.session import AsyncSession
 
+from app.business_logic.services.ai_model_services.ai_model_type_service import create_model_type, \
+    read_model_type_by_id, delete_model_type
 from app.contexts.mariadb_session import get_session
 from app.entities.models.ai_model import AIModelType
 from app.entities.schemes.ai_model_type_schema import AIModelTypeCreate, AIModelTypeRead
 from app.business_logic.services.ai_model_services import ai_model_type_service
-from app.business_logic.services import create_model_type, read_model_type_by_id, \
-    delete_model_type
 
 router = APIRouter()
 

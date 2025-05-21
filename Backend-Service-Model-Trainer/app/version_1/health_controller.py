@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel.ext.asyncio.session import AsyncSession
 
+from app.business_logic.services.health_service import is_database_healthy, initialize_database
 from app.contexts.mariadb_session import get_session
-from app.business_logic.services import is_database_healthy, initialize_database
 
 router = APIRouter()
 

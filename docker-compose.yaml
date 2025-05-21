@@ -38,19 +38,20 @@
       - "3306:3306"   # <-- port-mapping på plads
 
   ai-backend-service:
-    container_name: ai_service_backend
-    build:
-      context: ./Backend-Service-Model-Trainer
-      dockerfile: Dockerfile
-    environment:
-      AI_DATABASE_URL: ${AI_DATABASE_URL}
-    depends_on:
-      - mariadb
-    volumes:
-      - ./Backend-Service-Model-Trainer:/app
-    ports:
-      - "8000:8000"  # <-- port-mapping til backend
-    restart: always
+      container_name: ai_service_backend
+      build:
+        context: ./Backend-Service-Model-Trainer
+        dockerfile: Dockerfile
+      environment:
+        AI_DATABASE_URL: ${AI_DATABASE_URL}
+      depends_on:
+        - mariadb
+      volumes:
+        - ./Backend-Service-Model-Trainer:/app
+        - ./blob:/app/blob  # <-- tilføj denne linje
+      ports:
+        - "8000:8000"
+      restart: always
 
 volumes:
   mariadb_data_map:

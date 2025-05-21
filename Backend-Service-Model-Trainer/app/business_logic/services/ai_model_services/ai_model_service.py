@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List
 from app.entities.models.ai_model import AIModel
 from app.entities.schemes.ai_model import AIModelCreate
-from app.repositories.ai_model_repos import ai_model_repo
+from app.repositories.sql.ai_model_repos import ai_model_repo
 
 
 async def create_model(session: AsyncSession, model: AIModelCreate) -> AIModel:

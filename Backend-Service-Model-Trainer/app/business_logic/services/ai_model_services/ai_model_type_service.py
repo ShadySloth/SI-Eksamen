@@ -3,8 +3,8 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 
 from app.entities.models.ai_model import AIModelType
 from app.entities.schemes.ai_model_type_schema import AIModelTypeCreate
-from app.repositories.ai_model_repos import ai_model_type_repo
-from app.repositories.ai_model_repos.ai_model_type_repo import create_ai_model_type, get_ai_model_type_by_id, \
+from app.repositories.sql.ai_model_repos import ai_model_type_repo
+from app.repositories.sql.ai_model_repos.ai_model_type_repo import create_ai_model_type, get_ai_model_type_by_id, \
     delete_ai_model_type
 
 

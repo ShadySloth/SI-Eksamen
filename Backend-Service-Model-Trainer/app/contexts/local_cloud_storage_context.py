@@ -1,28 +1,27 @@
-from contextlib import asynccontextmanager
 from pathlib import Path
-import boto3
+from typing import Optional
+
 from pydantic import BaseModel
 
 from app.repositories.interfaces.icloud_storage_context import ICloudStorageContext
 
+# todo skal have rigtige værdier fra token ved rigtig cloud
 class CloudSession(BaseModel):
-    user_id: str
-    token: str
-    storage_root: str = "/mnt/cloud-storage/datasets"
+    user_id: Optional[str] = None
+    token: Optional[str] = None
+    storage_root: str = "blob"  # Dette matcher din docker-compose mount
 
 
 class LocalCloudStorageContext(ICloudStorageContext):
     def __init__(self, session: CloudSession):
-        self.root_path = Path(session.config["base_path"])
+        # ✅ Korrekt brug af Pydantic-model attribut
+        self.root_path = Path(session.storage_root)
 
     async def __aenter__(self) -> "LocalCloudStorageContext":
-        # Ingen async ops i mock, men holder strukturen
         return self
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):
         pass
-
-
 
     async def get_dataset_as_bytes(self, dataset_id: str) -> bytes:
         zip_path = self.root_path / f"{dataset_id}.zip"
@@ -31,5 +30,3 @@ class LocalCloudStorageContext(ICloudStorageContext):
             raise FileNotFoundError(f"Dataset ZIP not found at: {zip_path}")
 
         return zip_path.read_bytes()
-
-
