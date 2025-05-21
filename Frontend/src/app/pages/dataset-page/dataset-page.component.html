@@ -1,0 +1,38 @@
+
+
+<div class="training-page-layout">
+  <!-- Left: Create New Training Set -->
+  <div class="training-set-container">
+    <h2>Create Training Set</h2>
+
+    <div class="form-header">
+      <input
+        type="text"
+        placeholder="Training set name"
+        [(ngModel)]="trainingSetName"
+      />
+      <button (click)="saveTrainingSet()">Save</button>
+    </div>
+
+    <div class="label-grid">
+      <div
+        class="label-card"
+        *ngFor="let label of labels"
+        [class.active]="isSelected(label)"
+        (click)="selectLabel(label)"
+      >
+        {{ label.name }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Right: List of Saved Sets -->
+  <div class="saved-sets-container">
+    <h2>Saved Training Sets</h2>
+    <ul>
+      <li *ngFor="let set of savedTrainingSets">
+        <strong>{{ set.dataSetName }}</strong>
+      </li>
+    </ul>
+  </div>
+</div>

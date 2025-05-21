@@ -13,7 +13,7 @@
       - "5001:8080"
     volumes:
       - ./blob:/blob
-      - ./Images:/Images
+      - ./Backend-Service/Images:/Images
   
   postgresDb:
     image: postgres:latest

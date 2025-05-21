@@ -26,3 +26,13 @@ export interface Segmentation {
   labelId: string;
   imageId: string;
 }
+
+export interface Dataset {
+  id?: string;
+  dataSetName: string;
+}
+
+export interface CreateDataSet {
+  dataSet: Dataset;
+  labelsToBeUsed: string[];
+}
