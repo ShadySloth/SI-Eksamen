@@ -35,14 +35,14 @@ public class DataService : IDataService
         var images = new List<ImageDto>();
         foreach (var label in dataSetDto.LabelsToBeUsed)
         {
-            images.AddRange(_imageService.GetImagesByLabel(label.Id).Result); 
+            images.AddRange(_imageService.GetImagesByLabel(label).Result); 
         }
 
         foreach (var (label, labelIndex) in dataSetDto.LabelsToBeUsed.Select((l, i) => (l, i)))
         {
             foreach (var image in images)
             {
-                var segments = await _segmentationService.GetSegmentationsByImageAndLabel(image.Id, label.Id);
+                var segments = await _segmentationService.GetSegmentationsByImageAndLabel(image.Id, label);
                 collectedSegments.AddRange(segments.Select(segment => (segment, labelIndex)));
             }
         }
