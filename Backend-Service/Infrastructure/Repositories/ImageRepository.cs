@@ -1,4 +1,5 @@
-﻿using Backend_Service.Domain.Entities;
+﻿using Backend_Service.Domain.DTOs;
+using Backend_Service.Domain.Entities;
 using Backend_Service.Infrastructure.Contexts;
 using Backend_Service.Infrastructure.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -23,15 +24,27 @@ public class ImageRepository : IImageRepository
         return image!;
     }
 
-    public Task<Image[]> GetImages(int page, int pageSize)
+    public async Task<PagedResult<Image>> GetImages(int page, int pageSize)
     {
-        var images = _context.Images
+        if (page < 1) page = 1;
+        if (pageSize < 1) pageSize = 10;
+        
+        var totalCount = await _context.Images.CountAsync();
+        var images = await _context.Images
             .OrderBy(i => i.FileName)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToArrayAsync();
         
-        return images;
+        var pagedResult = new PagedResult<Image>
+        {
+            Items = images,
+            TotalCount = totalCount,
+            Page = page,
+            PageSize = pageSize
+        };
+        
+        return pagedResult;
     }
 
     public async Task<Image[]> GetImagesByLabel(Guid labelId)

@@ -1,5 +1,5 @@
 import {Component, ElementRef, NgIterable, OnInit, ViewChild} from '@angular/core';
-import {Label, Picture, Segmentation} from "../../models";
+import {Label, PagedResult, Picture, Segmentation} from "../../models";
 import {ImageService} from "../../services/image.service";
 import {LabelService} from "../../services/label.service";
 import {SegmentationService} from "../../services/segmentation.service";
@@ -14,7 +14,7 @@ export class ImagePageComponent implements OnInit {
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
   @ViewChild('imageRef', { static: false }) imageRef!: ElementRef<HTMLImageElement>;
   selectedImage: Picture | null = null;
-  imageList: Picture[] = [];
+  pagedImages: PagedResult<Picture> | null = null;
   selectedFile: File | null = null;
   labelList: Label[] = [];
   selectedLabels: Label[] = [];
@@ -36,6 +36,7 @@ export class ImagePageComponent implements OnInit {
   };
 
   newLabel: string = '';
+  totalPages: number = 0;
 
   constructor(private imageService: ImageService,
               private labelService: LabelService,
@@ -65,16 +66,20 @@ export class ImagePageComponent implements OnInit {
     formData.append('file', this.selectedFile, this.selectedFile.name);
     var response = await this.imageService.uploadImage(formData);
     this.selectedImage = response;
-    this.imageList = [...this.imageList, response];
+    if (this.pagedImages){
+      this.pagedImages.items = [...this.pagedImages.items, response];
+      this.pagedImages.totalCount += 1;
+    }
   }
 
-  private async fetchImages(): Promise<void> {
-    this.imageList = await this.imageService.getImages();
-    if (this.imageList.length > 0) {
-      this.selectImage(this.imageList[0]);
+  private async fetchImages(page: number = 1, pageSize: number = 10): Promise<void> {
+    this.pagedImages = await this.imageService.getImages(page, pageSize);
+    if (this.pagedImages && this.pagedImages.items.length > 0) {
+      this.selectImage(this.pagedImages.items[0]);
       this.activeLabel = this.labelList[0];
       this.loadSegmentations();
     }
+    this.totalPages = Math.ceil(this.pagedImages?.totalCount! / this.pagedImages.pageSize);
   }
 
   async loadSegmentations() {
@@ -133,7 +138,7 @@ export class ImagePageComponent implements OnInit {
 
       label.images = originalImages;
       this.selectedLabels = originalSelectedLabels;
-  
+
       input.checked = !checked;
     }
   }
@@ -219,6 +224,20 @@ export class ImagePageComponent implements OnInit {
     } catch (err) {
       console.error('Failed to remove segmentation:', err);
       // optionally show a message or reload the list
+    }
+  }
+
+  goToPreviousPage() {
+    if (this.pagedImages && this.pagedImages.page > 1) {
+      this.pagedImages.page -= 1;
+      this.fetchImages(this.pagedImages.page, this.pagedImages.pageSize);
+    }
+  }
+
+  goToNextPage() {
+    if (this.pagedImages && this.pagedImages.page < this.totalPages) {
+      this.pagedImages.page += 1;
+      this.fetchImages(this.pagedImages.page, this.pagedImages.pageSize);
     }
   }
 }

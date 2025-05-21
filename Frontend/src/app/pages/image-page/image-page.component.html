@@ -70,10 +70,15 @@
 
     <!-- Bottom part: Horizontal image list -->
     <div class="image-list-horizontal">
-      <div *ngFor="let img of imageList" class="image-item" (click)="selectImage(img)">
+      <div *ngFor="let img of pagedImages?.items" class="image-item" (click)="selectImage(img)">
         <h4>{{ img.fileName }}</h4>
         <img [src]="'data:image/png;base64,' + img.fileBase64" alt="Image">
       </div>
+      <div class="pagination-controls">
+      <button (click)="goToPreviousPage()" [disabled]="pagedImages?.page === 1">Previous</button>
+      <span>Page {{ pagedImages?.page }} of {{ totalPages }}</span>
+      <button (click)="goToNextPage()" [disabled]="pagedImages?.page === totalPages">Next</button>
+    </div>
     </div>
   </div>
 

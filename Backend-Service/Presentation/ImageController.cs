@@ -34,7 +34,7 @@ public class ImageController : ControllerBase
     /// <param name="pageSize"></param>
     /// <returns></returns>
     [HttpGet]
-    public async Task<ActionResult<ImageDto[]>> GetImages(int page = 1, int pageSize = 10)
+    public async Task<ActionResult<PagedResult<ImageDto>>> GetImages(int page = 1, int pageSize = 10)
     {
         var images = await _imageService.GetImages(page, pageSize);
         return Ok(images);
