@@ -4,7 +4,6 @@ from app.contexts.local_cloud_storage_context import CloudSession, LocalCloudSto
 from app.entities.models.model_type_enums import ModelTypeEnum
 from app.repositories.cloud.cloud_storage_repo import CloudStorageRepository
 
-
 async def fetch_zip_for_training(zip_filename: str, session: CloudSession) -> bytes:
     async with LocalCloudStorageContext(session) as cloud_context:
         repo = CloudStorageRepository(cloud_context)
