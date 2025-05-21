@@ -33,7 +33,7 @@ async def delete(model_id: int, session: AsyncSession = Depends(get_session)):
     return {"ok": True}
 
 
-@router.post("/train/{model_id}")
+@router.post("/train")
 async def train_model(request: TrainingRequest, session_sql: AsyncSession = Depends(get_session)):
     # Mock CloudSession – i rigtig cloud ville du tilføje auth, bucket info etc.
     session_cloud = CloudSession()

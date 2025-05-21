@@ -23,6 +23,5 @@ export class LabelService {
 
   async updateLabel(label: Label) {
     var response = await firstValueFrom(this.httpClient.put<Label>(this.baseUrl + "/label", label))
-    console.log("Label updated: ", response);
   }
 }

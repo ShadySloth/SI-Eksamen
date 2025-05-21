@@ -74,12 +74,14 @@ export class ImagePageComponent implements OnInit {
 
   private async fetchImages(page: number = 1, pageSize: number = 10): Promise<void> {
     this.pagedImages = await this.imageService.getImages(page, pageSize);
-    if (this.pagedImages && this.pagedImages.items.length > 0) {
+
+    if (this.pagedImages?.items?.length > 0) {
       this.selectImage(this.pagedImages.items[0]);
       this.activeLabel = this.labelList[0];
       this.loadSegmentations();
     }
-    this.totalPages = Math.ceil(this.pagedImages?.totalCount! / this.pagedImages.pageSize);
+
+    this.totalPages = Math.ceil((this.pagedImages?.totalCount || 0) / (this.pagedImages?.pageSize || 1));
   }
 
   async loadSegmentations() {
