@@ -9,5 +9,4 @@ router.include_router(ai_models_controller.router, prefix="/ai/models", tags=["A
 router.include_router(health_controller.router, prefix="/health", tags=["Health"])
 
 
-router.include_router(ai_test_trainer.router, prefix="/test_endpoints", tags=["test"])
 
