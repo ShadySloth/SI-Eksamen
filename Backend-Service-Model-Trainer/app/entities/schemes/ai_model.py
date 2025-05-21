@@ -13,6 +13,8 @@ class AIModelCreate(SQLModel):
 
 
 class TrainingRequest(BaseModel):
+    new_model_name: str
+    selected_model: str
     training_data_name: str
     epochs: Optional[int] = Field(default=10, description="Number of training epochs")
     image_size: Optional[int] = Field(default=640, description="Size of training images")
