@@ -92,11 +92,11 @@ public class DataService : IDataService
         return dataSetResult;
     }
 
-    public Task<DataSetDto[]> GetDataSets()
+    public async Task<DataSetDto[]> GetDataSets()
     {
-        var dataSets = _dataRepository.GetDataSets();
+        var dataSets = await _dataRepository.GetDataSets();
         var dataSetDtos = _mapper.Map<DataSetDto[]>(dataSets);
-        return Task.FromResult(dataSetDtos);
+        return dataSetDtos;
     }
 
     private async Task WriteYamlConfig(DataSetConfig config, string filePath)
