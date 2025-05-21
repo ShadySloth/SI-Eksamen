@@ -21,6 +21,8 @@ public interface IImageService
     /// <returns>Array of ImageDto</returns>
     Task<ImageDto[]> GetImages(int page, int pageSize);
     
+    Task<ImageDto[]> GetImagesByLabel(Guid labelId);
+    
     /// <summary>
     /// Uploads an image.
     /// </summary>

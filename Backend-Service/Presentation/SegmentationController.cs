@@ -15,8 +15,8 @@ public class SegmentationController : ControllerBase
         _segmentationService = segmentationService;
     }
     
-    [HttpGet]
-    public async Task<ActionResult<SegmentationDto>> GetSegmentationById([FromQuery]Guid segmentationId)
+    [HttpGet("{segmentationId}")]
+    public async Task<ActionResult<SegmentationDto>> GetSegmentationById(Guid segmentationId)
     {
         var segmentationDto = await _segmentationService.GetSegmentationById(segmentationId);
         return Ok(segmentationDto);
@@ -29,15 +29,15 @@ public class SegmentationController : ControllerBase
         return Ok(segmentationDtos);
     }
     
-    [HttpGet]
-    public async Task<ActionResult<SegmentationDto[]>> GetSegmentationsByLabel([FromQuery]Guid labelId)
+    [HttpGet("byLabel/{labelId}")]
+    public async Task<ActionResult<SegmentationDto[]>> GetSegmentationsByLabel(Guid labelId)
     {
         var segmentationDtos = await _segmentationService.GetSegmentationsByLabel(labelId);
         return Ok(segmentationDtos);
     }
 
-    [HttpGet]
-    public async Task<ActionResult<SegmentationDto[]>> GetSegmentationsByImage([FromQuery]Guid imageId)
+    [HttpGet("byImage/{imageId}")]
+    public async Task<ActionResult<SegmentationDto[]>> GetSegmentationsByImage(Guid imageId)
     {
         var segmentationDtos = await _segmentationService.GetSegmentationsByImage(imageId);
         return Ok(segmentationDtos);

@@ -12,6 +12,7 @@ public class ImageContext : DbContext
     public DbSet<Image> Images { get; set; }
     public DbSet<Label> Labels { get; set; }
     public DbSet<Segmentation> Segmentations { get; set; }
+    public DbSet<DataSet> DataSets { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -40,5 +41,13 @@ public class ImageContext : DbContext
             .HasOne(s => s.Image)
             .WithMany()
             .HasForeignKey(s => s.ImageId);
+        
+        //DataSet
+        modelBuilder.Entity<DataSet>()
+            .Property(d => d.DataSetName)
+            .HasMaxLength(50);
+        modelBuilder.Entity<DataSet>()
+            .HasIndex(d => d.DataSetName)
+            .IsUnique();
     }
 }

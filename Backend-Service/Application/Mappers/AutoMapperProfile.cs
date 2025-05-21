@@ -19,5 +19,9 @@ public class AutoMapperProfile : Profile
         //Segmentation
         CreateMap<Segmentation, SegmentationDto>();
         CreateMap<SegmentationDto, Segmentation>();
+        
+        //DataSet
+        CreateMap<DataSet, DataSetDto>();
+        CreateMap<DataSetDto, DataSet>();
     }
 }
