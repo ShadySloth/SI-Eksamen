@@ -12,6 +12,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
+builder.Services.AddScoped<IDataService, DataService>();
+builder.Services.AddScoped<IDataRepository, DataRepository>();
 builder.Services.AddScoped<ISegmentationRepository, SegmentationRepository>();
 builder.Services.AddScoped<ISegmentationService, SegmentationService>();
 builder.Services.AddScoped<ILabelRepository, LabelRepository>();
