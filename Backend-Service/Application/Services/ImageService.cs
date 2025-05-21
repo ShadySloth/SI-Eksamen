@@ -40,6 +40,19 @@ public class ImageService : IImageService
         return imageDtos;
     }
 
+    public async Task<ImageDto[]> GetImagesByLabel(Guid labelId)
+    {
+        var images = await _imageRepository.GetImagesByLabel(labelId);
+        var imageDtos = _mapper.Map<ImageDto[]>(images);
+        
+        foreach (var imageDto in imageDtos)
+        {
+            imageDto.FileBase64 = GetFile(imageDto.FileName);
+        }
+
+        return imageDtos;
+    }
+
     public async Task<ImageDto> UploadImage(IFormFile file)
     {
         CheckFile(file);

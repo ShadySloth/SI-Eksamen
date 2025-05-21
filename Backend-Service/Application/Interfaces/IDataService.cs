@@ -6,4 +6,5 @@ namespace Backend_Service.Application.Interfaces;
 public interface IDataService
 {
     Task<DataSetDto> CreateTrainingSet(CreateDataSetDto dataSetDto);
+    Task<DataSetDto[]> GetDataSets();
 }

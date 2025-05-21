@@ -32,7 +32,15 @@ public class ImageRepository : IImageRepository
             .ToArrayAsync();
         
         return images;
+    }
+
+    public async Task<Image[]> GetImagesByLabel(Guid labelId)
+    {
+        var images = await _context.Images
+            .Where(i => i.Labels.Any(l => l.Id ==labelId))
+            .ToArrayAsync();
         
+        return images;
     }
 
     public async Task<Image> UploadImage(Image image)

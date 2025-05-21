@@ -41,5 +41,13 @@ public class ImageContext : DbContext
             .HasOne(s => s.Image)
             .WithMany()
             .HasForeignKey(s => s.ImageId);
+        
+        //DataSet
+        modelBuilder.Entity<DataSet>()
+            .Property(d => d.DataSetName)
+            .HasMaxLength(50);
+        modelBuilder.Entity<DataSet>()
+            .HasIndex(d => d.DataSetName)
+            .IsUnique();
     }
 }

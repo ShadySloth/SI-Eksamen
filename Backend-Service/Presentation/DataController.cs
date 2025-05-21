@@ -22,4 +22,12 @@ public class DataController : ControllerBase
 
         return Ok(result);
     }
+    
+    [HttpGet]
+    public async Task<ActionResult<DataSetDto[]>> GetDataSets()
+    {
+        var result = await _dataService.GetDataSets();
+
+        return Ok(result);
+    }
 }

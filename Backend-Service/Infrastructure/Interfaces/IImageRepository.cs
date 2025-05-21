@@ -14,6 +14,9 @@ public interface IImageRepository
      */
     Task<Image[]> GetImages(int page, int pageSize);
     
+    /// Gets images by label id.
+    Task<Image[]> GetImagesByLabel(Guid labelId);
+    
     /**
      * Uploads an image.
      */

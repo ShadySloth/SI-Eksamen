@@ -22,4 +22,11 @@ public class DataRepository : IDataRepository
             .Where(d => d.DataSetName == dataSet.DataSetName)
             .FirstOrDefaultAsync())!;
     }
+
+    public async Task<DataSet[]> GetDataSets()
+    {
+        var dataSets = await _context.DataSets
+            .ToArrayAsync();
+        return dataSets;
+    }
 }
