@@ -1,0 +1,29 @@
+<div class="full-screen-upload">
+  <div class="upload-container">
+    <h2>Upload an Image</h2>
+
+    <input
+      type="file"
+      #fileInput
+      accept="image/*"
+      (change)="onFileSelected($event)"
+      hidden
+    />
+    <button (click)="fileInput.click()">Choose File</button>
+
+    <div class="image-preview" *ngIf="uploadedImageUrl">
+      <img [src]="uploadedImageUrl" alt="Preview" />
+    </div>
+
+    <div class="model-selection" *ngIf="uploadedImageUrl">
+      <label for="modelSelect">Choose Model:</label>
+      <select id="modelSelect" [(ngModel)]="selectedModel">
+        <option *ngFor="let model of availableModels" [value]="model">
+          {{ model.name }}
+        </option>
+      </select>
+
+      <button (click)="runModel()" [disabled]="!selectedModel">Run</button>
+    </div>
+  </div>
+</div>
