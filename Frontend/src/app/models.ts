@@ -44,3 +44,11 @@ export interface Training {
   epochs: number;
   image_size: number;
 }
+
+export interface TrainedModel {
+  id?: number;
+  name: string;
+  trained_at: Date;
+  path: string;
+  description: string;
+}
