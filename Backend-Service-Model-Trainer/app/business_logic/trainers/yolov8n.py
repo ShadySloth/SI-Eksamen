@@ -15,7 +15,6 @@ class YOLO8NTrainer(IAITrainer):
         - imgsz: billedstørrelse
         - output_dir: hvor modellen skal gemmes
         """
-
         data_yaml_path = data.get("data_yaml_path")
         epochs = data.get("epochs", 10)
         imgsz = data.get("imgsz", 640)
@@ -42,5 +41,5 @@ class YOLO8NTrainer(IAITrainer):
         loop = asyncio.get_event_loop()
         await loop.run_in_executor(None, train_sync)
 
-        final_model_path = os.path.join(output_dir, "yolo8n_model", "weights", "best.pt")
+        final_model_path: str = os.path.join(output_dir, "yolo8n_model", "weights", "best.pt")
         return final_model_path
