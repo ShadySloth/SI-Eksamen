@@ -9,6 +9,7 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { TrainingStatusComponent } from './pages/training-status/training-status.component';
 import {FormsModule} from "@angular/forms";
 import { DatasetPageComponent } from './pages/dataset-page/dataset-page.component';
+import { UseModelPageComponent } from './pages/use-model-page/use-model-page.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { DatasetPageComponent } from './pages/dataset-page/dataset-page.componen
     ImagePageComponent,
     SidebarComponent,
     TrainingStatusComponent,
-    DatasetPageComponent
+    DatasetPageComponent,
+    UseModelPageComponent
   ],
     imports: [
         BrowserModule,

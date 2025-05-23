@@ -48,7 +48,7 @@ export class ImagePageComponent implements OnInit {
     }
 
   triggerFileSelect(): void {
-    this.fileInput.nativeElement.click();  // Opens the file picker
+    this.fileInput.nativeElement.click();
   }
 
   async onFileSelected(event: Event): Promise<void> {
@@ -96,13 +96,11 @@ export class ImagePageComponent implements OnInit {
   selectImage(img: Picture) {
     this.selectedImage = img;
 
-    // Filter labels attached to the image
     this.selectedLabels = this.labelList.filter(label =>
       label.images?.some(image => image.id === img.id)
     );
 
     this.activeLabel = this.selectedLabels[0] || null;
-    // Also load segmentations for current active label
     this.loadSegmentations();
   }
 
@@ -224,7 +222,6 @@ export class ImagePageComponent implements OnInit {
       this.segmentations = this.segmentations.filter(s => s.id !== segmentation.id);
     } catch (err) {
       console.error('Failed to remove segmentation:', err);
-      // optionally show a message or reload the list
     }
   }
 
