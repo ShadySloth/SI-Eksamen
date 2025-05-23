@@ -24,15 +24,15 @@ async def train_model_on_set(map_key: str, epochs: int, imgsz: int, session: Clo
         # 3. Få fat i stien til data.yaml
         yaml_path = handler.get_data_yaml()
 
-        mock_data = {
+        data = {
             "data_yaml_path": yaml_path,
             "epochs": epochs,
-            "imgsz": 416,
-            "output_dir": "results"
+            "imgsz": imgsz,
+            "output_dir": f"results/{map_key}",
         }
 
         context = AITrainingContext(model_type=ModelTypeEnum.YOLOV8N)
-        model_path = await context.train(mock_data)
+        model_path = await context.train(data)
         print(f"Trænet model gemt her: {model_path}")
 
         # Returnér stien

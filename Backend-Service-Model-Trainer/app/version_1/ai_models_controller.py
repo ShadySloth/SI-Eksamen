@@ -8,6 +8,7 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 from starlette.responses import FileResponse
 
 from app.business_logic.runners import yolo_runner
+from app.business_logic.services.ai_model_services.ai_model_service import get_model
 from app.business_logic.services.tranings_data_service import train_model_on_set
 from app.contexts.local_cloud_storage_context import CloudSession
 from app.contexts.mariadb_session import get_session
@@ -46,6 +47,7 @@ async def run_model_on_img(
     uploaded_file: UploadFile = File(...),
     session: AsyncSession = Depends(get_session)
 ):
+    model = await get_model(session, model_id)
     # ── 1. Gem den uploadede fil til disk ─────────────────────────────
     upload_dir = "uploads"
     os.makedirs(upload_dir, exist_ok=True)
@@ -59,7 +61,7 @@ async def run_model_on_img(
 
     # ── 2. Kør YOLO detektion med stien til den gemte fil ─────────────
     detected_image = await yolo_runner.detect(
-        model_path="results/yolo8n_model/weights/best.pt",
+        model_path= model.path,
         image=file_path  # ← bruger den gemte sti her
     )
 

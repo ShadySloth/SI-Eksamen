@@ -15,7 +15,6 @@ class YOLO8NTrainer(IAITrainer):
         - imgsz: billedstørrelse
         - output_dir: hvor modellen skal gemmes
         """
-
         data_yaml_path = data.get("data_yaml_path")
         epochs = data.get("epochs", 10)
         imgsz = data.get("imgsz", 640)
