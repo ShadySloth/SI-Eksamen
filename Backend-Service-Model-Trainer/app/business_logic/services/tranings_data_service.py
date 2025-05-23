@@ -15,7 +15,7 @@ async def fetch_zip_for_training(zip_filename: str, session: CloudSession) -> by
         return zip_bytes
 
 
-async def train_model_on_set(map_key: str, epochs: int, imgsz: int, session: CloudSession) -> str:
+async def train_model_on_set(new_name: str, map_key: str, epochs: int, imgsz: int, session: CloudSession) -> str:
     # 1. Hent ZIP-filen som bytes fra din mock cloud storage
     zip_bytes = await fetch_zip_for_training(map_key, session)
 
@@ -28,12 +28,11 @@ async def train_model_on_set(map_key: str, epochs: int, imgsz: int, session: Clo
             "data_yaml_path": yaml_path,
             "epochs": epochs,
             "imgsz": imgsz,
-            "output_dir": f"results/{map_key}",
+            "output_dir": f"results/{new_name}/",
         }
 
         context = AITrainingContext(model_type=ModelTypeEnum.YOLOV8N)
         model_path = await context.train(data)
         print(f"Trænet model gemt her: {model_path}")
-
         # Returnér stien
-        return str(model_path)
+        return model_path
