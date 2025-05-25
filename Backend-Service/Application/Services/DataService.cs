@@ -113,7 +113,7 @@ public class DataService : IDataService
         await File.WriteAllTextAsync(filePath, yaml);
     }
     
-    private async Task WriteSet(IEnumerable<IGrouping<Guid, (SegmentationDto segmentationDto, int labelIndex)>> groups,
+    private async Task WriteSet(IEnumerable<IGrouping<int, (SegmentationDto segmentationDto, int labelIndex)>> groups,
         string setName, string dataSetName)
     {
         foreach (var group in groups)

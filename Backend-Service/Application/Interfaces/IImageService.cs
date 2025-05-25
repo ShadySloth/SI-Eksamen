@@ -11,7 +11,7 @@ public interface IImageService
     /// </summary>
     /// <param name="imageId">Id to get by.</param>
     /// <returns>ImageDto</returns>
-    Task<ImageDto> GetImage(Guid imageId);
+    Task<ImageDto> GetImage(int imageId);
 
     /// <summary>
     /// Gets paginated images.
@@ -21,7 +21,7 @@ public interface IImageService
     /// <returns>Array of ImageDto</returns>
     Task<PagedResult<ImageDto>> GetImages(int page, int pageSize);
     
-    Task<ImageDto[]> GetImagesByLabel(Guid labelId);
+    Task<ImageDto[]> GetImagesByLabel(int labelId);
     
     /// <summary>
     /// Uploads an image.

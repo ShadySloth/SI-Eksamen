@@ -8,7 +8,7 @@ public interface IImageRepository
     /**
      * Gets an image by id.
      */
-    Task<Image> GetImage(Guid imageId);
+    Task<Image> GetImage(int imageId);
 
     /**
      * Gets a paginated list of images.
@@ -16,7 +16,7 @@ public interface IImageRepository
     Task<PagedResult<Image>> GetImages(int page, int pageSize);
     
     /// Gets images by label id.
-    Task<Image[]> GetImagesByLabel(Guid labelId);
+    Task<Image[]> GetImagesByLabel(int labelId);
     
     /**
      * Uploads an image.

@@ -14,7 +14,7 @@ public class SegmentationRepository : ISegmentationRepository
         _context = context;
     }
     
-    public async Task<Segmentation> GetSegmentationById(Guid segmentationId)
+    public async Task<Segmentation> GetSegmentationById(int segmentationId)
     {
         var segmentation = await _context.Segmentations
             .Where(s => s.Id == segmentationId)
@@ -23,7 +23,7 @@ public class SegmentationRepository : ISegmentationRepository
         return segmentation!;
     }
     
-    public async Task<Segmentation[]> GetSegmentationsByImageAndLabel(Guid imageId, Guid labelId)
+    public async Task<Segmentation[]> GetSegmentationsByImageAndLabel(int imageId, int labelId)
     {
         var segmentations = await _context.Segmentations
             .Where(s => s.ImageId == imageId && s.LabelId == labelId)
@@ -32,7 +32,7 @@ public class SegmentationRepository : ISegmentationRepository
         return segmentations;
     }
 
-    public async Task<Segmentation[]> GetSegmentationsByLabel(Guid labelId)
+    public async Task<Segmentation[]> GetSegmentationsByLabel(int labelId)
     {
         var segmentations = await _context.Segmentations
             .Where(s => s.LabelId == labelId)
@@ -41,7 +41,7 @@ public class SegmentationRepository : ISegmentationRepository
         return segmentations;
     }
 
-    public async Task<Segmentation[]> GetSegmentationsByImage(Guid imageId)
+    public async Task<Segmentation[]> GetSegmentationsByImage(int imageId)
     {
         var segmentations = await _context.Segmentations
             .Where(s => s.ImageId == imageId)

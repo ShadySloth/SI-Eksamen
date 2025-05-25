@@ -17,7 +17,7 @@ public class ImageService : IImageService
         _imageRepository = imageRepository;
     }
 
-    public async Task<ImageDto> GetImage(Guid imageId)
+    public async Task<ImageDto> GetImage(int imageId)
     {
         var image = await _imageRepository.GetImage(imageId);
         var imageDto = _mapper.Map<ImageDto>(image);
@@ -48,7 +48,7 @@ public class ImageService : IImageService
         return pagedResult;
     }
 
-    public async Task<ImageDto[]> GetImagesByLabel(Guid labelId)
+    public async Task<ImageDto[]> GetImagesByLabel(int labelId)
     {
         var images = await _imageRepository.GetImagesByLabel(labelId);
         var imageDtos = _mapper.Map<ImageDto[]>(images);

@@ -15,7 +15,7 @@ public class ImageRepository : IImageRepository
         _context = context;
     }
 
-    public Task<Image> GetImage(Guid imageId)
+    public Task<Image> GetImage(int imageId)
     {
         var image = _context.Images
             .Select(i => i)
@@ -47,7 +47,7 @@ public class ImageRepository : IImageRepository
         return pagedResult;
     }
 
-    public async Task<Image[]> GetImagesByLabel(Guid labelId)
+    public async Task<Image[]> GetImagesByLabel(int labelId)
     {
         var images = await _context.Images
             .Where(i => i.Labels.Any(l => l.Id ==labelId))

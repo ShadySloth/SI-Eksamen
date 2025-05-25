@@ -1,39 +1,61 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
 namespace Backend_Service.Migrations
 {
     /// <inheritdoc />
-    public partial class segmentationCreated : Migration
+    public partial class nedbej : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Images_Labels_LabelId",
-                table: "Images");
+            migrationBuilder.CreateTable(
+                name: "DataSets",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    DataSetName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DataSets", x => x.Id);
+                });
 
-            migrationBuilder.DropIndex(
-                name: "IX_Images_LabelId",
-                table: "Images");
+            migrationBuilder.CreateTable(
+                name: "Images",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    FileName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Images", x => x.Id);
+                });
 
-            migrationBuilder.DropColumn(
-                name: "ImageIds",
-                table: "Labels");
-
-            migrationBuilder.DropColumn(
-                name: "LabelId",
-                table: "Images");
+            migrationBuilder.CreateTable(
+                name: "Labels",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Labels", x => x.Id);
+                });
 
             migrationBuilder.CreateTable(
                 name: "ImageLabel",
                 columns: table => new
                 {
-                    ImagesId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LabelsId = table.Column<Guid>(type: "uuid", nullable: false)
+                    ImagesId = table.Column<int>(type: "integer", nullable: false),
+                    LabelsId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -56,13 +78,14 @@ namespace Backend_Service.Migrations
                 name: "Segmentations",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     FirstCoordinateX = table.Column<double>(type: "double precision", nullable: false),
                     FirstCoordinateY = table.Column<double>(type: "double precision", nullable: false),
                     SecondCoordinateX = table.Column<double>(type: "double precision", nullable: false),
                     SecondCoordinateY = table.Column<double>(type: "double precision", nullable: false),
-                    LabelId = table.Column<Guid>(type: "uuid", nullable: false),
-                    ImageId = table.Column<Guid>(type: "uuid", nullable: false)
+                    LabelId = table.Column<int>(type: "integer", nullable: false),
+                    ImageId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -82,9 +105,21 @@ namespace Backend_Service.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_DataSets_DataSetName",
+                table: "DataSets",
+                column: "DataSetName",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ImageLabel_LabelsId",
                 table: "ImageLabel",
                 column: "LabelsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Images_FileName",
+                table: "Images",
+                column: "FileName",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Segmentations_ImageId",
@@ -101,34 +136,19 @@ namespace Backend_Service.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "DataSets");
+
+            migrationBuilder.DropTable(
                 name: "ImageLabel");
 
             migrationBuilder.DropTable(
                 name: "Segmentations");
 
-            migrationBuilder.AddColumn<List<Guid>>(
-                name: "ImageIds",
-                table: "Labels",
-                type: "uuid[]",
-                nullable: false);
+            migrationBuilder.DropTable(
+                name: "Images");
 
-            migrationBuilder.AddColumn<Guid>(
-                name: "LabelId",
-                table: "Images",
-                type: "uuid",
-                nullable: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Images_LabelId",
-                table: "Images",
-                column: "LabelId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Images_Labels_LabelId",
-                table: "Images",
-                column: "LabelId",
-                principalTable: "Labels",
-                principalColumn: "Id");
+            migrationBuilder.DropTable(
+                name: "Labels");
         }
     }
 }

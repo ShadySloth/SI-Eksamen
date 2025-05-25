@@ -21,7 +21,7 @@ public class ImageController : ControllerBase
     /// <param name="imageId"></param>
     /// <returns></returns>
     [HttpGet("{imageId}")]
-    public async Task<ActionResult<ImageDto>> GetImageAsync(Guid imageId)
+    public async Task<ActionResult<ImageDto>> GetImageAsync(int imageId)
     {
         var image = await _imageService.GetImage(imageId);
         return image;
@@ -41,7 +41,7 @@ public class ImageController : ControllerBase
     }
     
     [HttpGet("label/{labelId}")]
-    public async Task<ActionResult<ImageDto[]>> GetImagesByLabel(Guid labelId)
+    public async Task<ActionResult<ImageDto[]>> GetImagesByLabel(int labelId)
     {
         var images = await _imageService.GetImagesByLabel(labelId);
         return Ok(images);
