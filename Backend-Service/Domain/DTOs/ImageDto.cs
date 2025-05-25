@@ -3,7 +3,7 @@
 public class ImageDto
 {
     /// The id of the image.
-    public Guid Id { get; set; }
+    public int Id { get; set; }
     
     /// The file name of the image.
     public required string FileName { get; set; }
