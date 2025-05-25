@@ -3,6 +3,7 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 
 from app.business_logic.services.health_service import is_database_healthy, initialize_database
 from app.contexts.mariadb_session import get_session
+from app.contexts.postgre_session import get_postgre_session
 
 router = APIRouter()
 
@@ -14,9 +15,12 @@ async def is_healthy(session: AsyncSession = Depends(get_session)):
 
 
 @router.get("/init_db", status_code=200)
-async def init_db_endpoint(session: AsyncSession = Depends(get_session)):
+async def init_db_endpoint(
+    session: AsyncSession = Depends(get_session),
+    session_post: AsyncSession = Depends(get_postgre_session),
+):
     try:
-        await initialize_database(session)
+        await initialize_database(session, session_post)
         return {"status": "database initialized"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Database initialization failed: {str(e)}")

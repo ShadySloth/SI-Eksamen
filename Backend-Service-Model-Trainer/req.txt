@@ -6,3 +6,8 @@ sqlalchemy
 numpy
 ultralytics
 python-multipart
+psycopg2-binary
+pyyaml
+pillow
+tqdm
+asyncpg

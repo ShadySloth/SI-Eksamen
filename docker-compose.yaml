@@ -52,7 +52,7 @@
         - mariadb
       volumes:
         - ./Backend-Service-Model-Trainer:/app
-        - ./blob:/app/blob  # <-- tilføj denne linje
+        - ./blob:/blob
       ports:
         - "8000:8000"
       restart: always
