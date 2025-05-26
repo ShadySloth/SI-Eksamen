@@ -89,11 +89,11 @@ public class DataService : IDataService
             Names = labels.Select(l => l.Name).ToArray()
         };
 
-        var yamlPath = $"../temp/datasets/{dataSetResult.DataSetName}/data.yaml";
+        var yamlPath = $"./temp/datasets/{dataSetResult.DataSetName}/data.yaml";
         await WriteYamlConfig(config, yamlPath);
         
         // Zip the dataset
-        ZipFile.CreateFromDirectory($"../temp/datasets/{dataSetResult.DataSetName}",
+        ZipFile.CreateFromDirectory($"./temp/datasets/{dataSetResult.DataSetName}",
             $"../blob/{dataSetResult.DataSetName}.zip");
         
         //File.Delete("../temp");
@@ -125,12 +125,16 @@ public class DataService : IDataService
             foreach (var (segment, labelIndex) in group)
             {
                 var fileName = $"{segment.ImageId}_{GenerateRandomString(32)}".Replace('.', '_');
-                var labelDir = $"../temp/datasets/{dataSetName}/{setName}/labels";
-                var imageDir = $"../temp/datasets/{dataSetName}/{setName}/images";
+                var labelDir = $"./temp/datasets/{dataSetName}/{setName}/labels";
+                var imageDir = $"./temp/datasets/{dataSetName}/{setName}/images";
                 if (!Directory.Exists(labelDir))
+                {
                     Directory.CreateDirectory(labelDir);
+                }
                 if (!Directory.Exists(imageDir))
+                {
                     Directory.CreateDirectory(imageDir);
+                }
 
                 var labelPath = Path.Combine(labelDir, $"{fileName}.txt");
                 var content = $"{labelIndex} " +
