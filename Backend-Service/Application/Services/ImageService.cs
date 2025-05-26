@@ -83,8 +83,7 @@ public class ImageService : IImageService
     /// Store the file locally
     private static void StoreLocally(IFormFile file)
     {
-        var root = Directory.GetCurrentDirectory();
-        var path = Path.Combine(root, "Images");
+        var path = $"../blob/Images/{file.FileName}";
         
         if (!Directory.Exists(path))
             Directory.CreateDirectory(path);
@@ -111,8 +110,7 @@ public class ImageService : IImageService
 
     private static string GetFile(string fileName)
     {
-        var root = Directory.GetCurrentDirectory();
-        var path = Path.Combine(root, "Images", fileName);
+        var path = $"../blob/Images/{fileName}";
         
         if (!File.Exists(path))
             throw new Exception("File not found");
