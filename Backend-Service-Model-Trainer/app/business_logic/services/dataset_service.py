@@ -49,7 +49,7 @@ async def print_and_store_yolo8_labels(zip_path, session):
             print(f"Directory not found: {images_dir}")
             return
 
-        target_dir = Path("blob/temp")
+        target_dir = Path("../blob/temp")
         target_dir.mkdir(parents=True, exist_ok=True)
 
         images = [f for f in os.listdir(images_dir) if f.lower().endswith(('.jpg', '.jpeg', '.png'))]
