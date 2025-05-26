@@ -110,7 +110,7 @@ public class ImageService : IImageService
 
     private static string GetFile(string fileName)
     {
-        var path = $"../blob/Images/{fileName}";
+        var path = $"{fileName}";
         
         if (!File.Exists(path))
             throw new Exception("File not found");

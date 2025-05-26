@@ -1,0 +1,7 @@
+path: /app/blob
+train: images/train
+val: images/val
+test: images/test
+names:
+- SmartPhone
+- undefined

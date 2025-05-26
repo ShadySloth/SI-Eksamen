@@ -37,7 +37,11 @@ public class DataService : IDataService
         var labels = new List<LabelDto>();
         foreach (var label in dataSetDto.LabelsToBeUsed)
         {
-            images.AddRange(_imageService.GetImagesByLabel(label).Result); 
+            var smthn = await _segmentationService.GetSegmentationsByLabel(label);
+            foreach (var segment in smthn)
+            {
+                images.AddRange(_imageService.GetImage(segment.ImageId).Result);
+            }
             labels.Add(_labelService.GetLabel(label).Result);
         }
 
@@ -92,7 +96,7 @@ public class DataService : IDataService
         ZipFile.CreateFromDirectory($"../temp/datasets/{dataSetResult.DataSetName}",
             $"../blob/{dataSetResult.DataSetName}.zip");
         
-        File.Delete("../temp");
+        //File.Delete("../temp");
 
         return dataSetResult;
     }
