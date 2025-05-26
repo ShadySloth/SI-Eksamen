@@ -37,12 +37,8 @@ public class DataService : IDataService
         var labels = new List<LabelDto>();
         foreach (var label in dataSetDto.LabelsToBeUsed)
         {
-            var smthn = await _segmentationService.GetSegmentationsByLabel(label);
-            foreach (var segment in smthn)
-            {
-                images.AddRange(_imageService.GetImage(segment.ImageId).Result);
-            }
-            labels.Add(_labelService.GetLabel(label).Result);
+            images.AddRange(await _imageService.GetImagesByLabel(label));
+            labels.Add(await _labelService.GetLabel(label));
         }
 
         foreach (var (label, labelIndex) in labels.Select((l, i) => (l, i)))
@@ -93,8 +89,8 @@ public class DataService : IDataService
         await WriteYamlConfig(config, yamlPath);
         
         // Zip the dataset
-        ZipFile.CreateFromDirectory($"./temp/datasets/{dataSetResult.DataSetName}",
-            $"../blob/{dataSetResult.DataSetName}.zip");
+        //ZipFile.CreateFromDirectory($"./temp/datasets/{dataSetResult.DataSetName}",
+        //    $"../blob/{dataSetResult.DataSetName}.zip");
         
         //File.Delete("../temp");
 
@@ -141,12 +137,11 @@ public class DataService : IDataService
                               $"{segment.FirstCoordinateX} {segment.FirstCoordinateY} " +
                               $"{segment.SecondCoordinateX} {segment.SecondCoordinateY}";
                 await File.WriteAllTextAsync(labelPath, content);
-                
-                var image = await _imageService.GetImage(segment.ImageId);
+
+                var image = segment.Image!;
                 var extension = Path.GetExtension(image.FileName);
                 var imagePath = Path.Combine(imageDir, $"{fileName}{extension}");
-                var imageBytes = Convert.FromBase64String(image.FileBase64!);
-                await File.WriteAllBytesAsync(imagePath, imageBytes);
+                File.Copy(image.FileName, imagePath);
             }
         }
     }

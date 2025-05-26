@@ -22,6 +22,8 @@ public interface IImageService
     Task<PagedResult<ImageDto>> GetImages(int page, int pageSize);
     
     Task<ImageDto[]> GetImagesByLabel(int labelId);
+    Task<ImageDto[]> GetImagesByLabelForDataSets(int labelId);
+
     
     /// <summary>
     /// Uploads an image.

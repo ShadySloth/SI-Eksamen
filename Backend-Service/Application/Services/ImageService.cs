@@ -61,6 +61,14 @@ public class ImageService : IImageService
         return imageDtos;
     }
 
+    public async Task<ImageDto[]> GetImagesByLabelForDataSets(int labelId)
+    {
+        var images = await _imageRepository.GetImagesByLabel(labelId);
+        var imageDtos = _mapper.Map<ImageDto[]>(images);
+
+        return imageDtos;
+    }
+
     public async Task<ImageDto> UploadImage(IFormFile file)
     {
         CheckFile(file);
