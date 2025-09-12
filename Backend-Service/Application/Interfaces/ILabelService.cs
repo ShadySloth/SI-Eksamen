@@ -15,14 +15,14 @@ public interface ILabelService
     /// </summary>
     /// <param name="labelId">Id to get by.</param>
     /// <returns>LabelDto</returns>
-    public Task<LabelDto> GetLabel(Guid labelId);
+    public Task<LabelDto> GetLabel(int labelId);
     
     /// <summary>
     /// Gets a label with images by id.
     /// </summary>
     /// <param name="labelId"></param>
     /// <returns></returns>
-    public Task<LabelDto> GetLabelWithImages(Guid labelId);
+    public Task<LabelDto> GetLabelWithImages(int labelId);
     
     /// <summary>
     /// Creates a new label.
@@ -42,5 +42,5 @@ public interface ILabelService
     /// </summary>
     /// <param name="labelId">Id to delete by.</param>
     /// <returns></returns>
-    public Task DeleteLabel(Guid labelId);
+    public Task DeleteLabel(int labelId);
 }

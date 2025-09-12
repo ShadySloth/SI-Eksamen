@@ -2,6 +2,7 @@
 using Backend_Service.Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -10,9 +11,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Backend_Service.Migrations
 {
     [DbContext(typeof(ImageContext))]
-    partial class ImageContextModelSnapshot : ModelSnapshot
+    [Migration("20250525174344_nedbejeeeewf")]
+    partial class nedbejeeeewf
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,7 +39,8 @@ namespace Backend_Service.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DataSetName");
+                    b.HasIndex("DataSetName")
+                        .IsUnique();
 
                     b.ToTable("DataSets");
                 });
@@ -55,7 +59,8 @@ namespace Backend_Service.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FileName");
+                    b.HasIndex("FileName")
+                        .IsUnique();
 
                     b.ToTable("Images");
                 });

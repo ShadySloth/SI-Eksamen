@@ -3,7 +3,7 @@ namespace Backend_Service.Domain.DTOs;
 public class SegmentationDto
 {
     /// The id of the segmentation.
-    public Guid Id { get; set; }
+    public int Id { get; set; }
     
     /// The first x-coordinate of the segmentation.
     public required double FirstCoordinateX { get; set; }
@@ -19,11 +19,11 @@ public class SegmentationDto
     
     
     // Relations
-    public Guid LabelId { get; set; }
+    public int LabelId { get; set; }
     
     public LabelDto? Label { get; set; }
     
-    public Guid ImageId { get; set; }
+    public int ImageId { get; set; }
     
     public ImageDto? Image { get; set; }
 }

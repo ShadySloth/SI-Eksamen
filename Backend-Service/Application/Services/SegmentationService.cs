@@ -17,28 +17,28 @@ public class SegmentationService : ISegmentationService
         _mapper = mapper;
     }
 
-    public async Task<SegmentationDto[]> GetSegmentationsByImageAndLabel(Guid imageId, Guid labelId)
+    public async Task<SegmentationDto[]> GetSegmentationsByImageAndLabel(int imageId, int labelId)
     {
         var segmentations = await _segmentationRepository.GetSegmentationsByImageAndLabel(imageId, labelId);
         var segmentationDtos = _mapper.Map<SegmentationDto[]>(segmentations);
         return segmentationDtos;
     }
 
-    public async Task<SegmentationDto> GetSegmentationById(Guid segmentationId)
+    public async Task<SegmentationDto> GetSegmentationById(int segmentationId)
     {
         var segmentation = await _segmentationRepository.GetSegmentationById(segmentationId);
         var segmentationDto = _mapper.Map<SegmentationDto>(segmentation);
         return segmentationDto;
     }
 
-    public async Task<SegmentationDto[]> GetSegmentationsByLabel(Guid labelId)
+    public async Task<SegmentationDto[]> GetSegmentationsByLabel(int labelId)
     {
         var segmentations = await _segmentationRepository.GetSegmentationsByLabel(labelId);
         var segmentationDtos = _mapper.Map<SegmentationDto[]>(segmentations);
         return segmentationDtos;
     }
 
-    public async Task<SegmentationDto[]> GetSegmentationsByImage(Guid imageId)
+    public async Task<SegmentationDto[]> GetSegmentationsByImage(int imageId)
     {
         var segmentations = await _segmentationRepository.GetSegmentationsByImage(imageId);
         var segmentationDtos = _mapper.Map<SegmentationDto[]>(segmentations);
@@ -61,7 +61,7 @@ public class SegmentationService : ISegmentationService
         return updatedSegmentationDto;
     }
 
-    public async Task DeleteSegmentation(Guid segmentationId)
+    public async Task DeleteSegmentation(int segmentationId)
     {
         var segmentation = await _segmentationRepository.GetSegmentationById(segmentationId);
         await _segmentationRepository.DeleteSegmentation(segmentation);

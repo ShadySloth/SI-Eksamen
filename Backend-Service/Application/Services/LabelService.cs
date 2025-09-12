@@ -26,14 +26,14 @@ public class LabelService : ILabelService
         return labelDtos;
     }
 
-    public async Task<LabelDto> GetLabel(Guid labelId)
+    public async Task<LabelDto> GetLabel(int labelId)
     {
         var label = await _labelRepository.GetLabel(labelId);
         var labelDto = _mapper.Map<LabelDto>(label);
         return labelDto;
     }
 
-    public async Task<LabelDto> GetLabelWithImages(Guid labelId)
+    public async Task<LabelDto> GetLabelWithImages(int labelId)
     {
         var label = await _labelRepository.GetLabelWithImages(labelId);
         var labelDto = _mapper.Map<LabelDto>(label);
@@ -56,7 +56,7 @@ public class LabelService : ILabelService
         return updatedLabelDto;
     }
 
-    public Task DeleteLabel(Guid labelId)
+    public Task DeleteLabel(int labelId)
     {
         _labelRepository.DeleteLabel(labelId);
         return Task.CompletedTask;

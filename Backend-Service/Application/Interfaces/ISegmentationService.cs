@@ -4,15 +4,15 @@ namespace Backend_Service.Application.Interfaces;
 
 public interface ISegmentationService
 {
-    public Task<SegmentationDto> GetSegmentationById(Guid segmentationId);
-    public Task<SegmentationDto[]> GetSegmentationsByImageAndLabel(Guid imageId, Guid labelId);
-    public Task<SegmentationDto[]> GetSegmentationsByLabel(Guid labelId);
+    public Task<SegmentationDto> GetSegmentationById(int segmentationId);
+    public Task<SegmentationDto[]> GetSegmentationsByImageAndLabel(int imageId, int labelId);
+    public Task<SegmentationDto[]> GetSegmentationsByLabel(int labelId);
     
-    public Task<SegmentationDto[]> GetSegmentationsByImage(Guid imageId);
+    public Task<SegmentationDto[]> GetSegmentationsByImage(int imageId);
     
     public Task<SegmentationDto> CreateSegmentation(SegmentationDto segmentation);
     
     public Task<SegmentationDto> UpdateSegmentation(SegmentationDto segmentation);
     
-    public Task DeleteSegmentation(Guid segmentationId);
+    public Task DeleteSegmentation(int segmentationId);
 }

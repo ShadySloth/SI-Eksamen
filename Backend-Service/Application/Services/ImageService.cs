@@ -17,7 +17,7 @@ public class ImageService : IImageService
         _imageRepository = imageRepository;
     }
 
-    public async Task<ImageDto> GetImage(Guid imageId)
+    public async Task<ImageDto> GetImage(int imageId)
     {
         var image = await _imageRepository.GetImage(imageId);
         var imageDto = _mapper.Map<ImageDto>(image);
@@ -48,7 +48,7 @@ public class ImageService : IImageService
         return pagedResult;
     }
 
-    public async Task<ImageDto[]> GetImagesByLabel(Guid labelId)
+    public async Task<ImageDto[]> GetImagesByLabel(int labelId)
     {
         var images = await _imageRepository.GetImagesByLabel(labelId);
         var imageDtos = _mapper.Map<ImageDto[]>(images);
@@ -57,6 +57,14 @@ public class ImageService : IImageService
         {
             imageDto.FileBase64 = GetFile(imageDto.FileName);
         }
+
+        return imageDtos;
+    }
+
+    public async Task<ImageDto[]> GetImagesByLabelForDataSets(int labelId)
+    {
+        var images = await _imageRepository.GetImagesByLabel(labelId);
+        var imageDtos = _mapper.Map<ImageDto[]>(images);
 
         return imageDtos;
     }
@@ -83,8 +91,7 @@ public class ImageService : IImageService
     /// Store the file locally
     private static void StoreLocally(IFormFile file)
     {
-        var root = Directory.GetCurrentDirectory();
-        var path = Path.Combine(root, "Images");
+        var path = $"../blob/Images/{file.FileName}";
         
         if (!Directory.Exists(path))
             Directory.CreateDirectory(path);
@@ -111,8 +118,7 @@ public class ImageService : IImageService
 
     private static string GetFile(string fileName)
     {
-        var root = Directory.GetCurrentDirectory();
-        var path = Path.Combine(root, "Images", fileName);
+        var path = $"{fileName}";
         
         if (!File.Exists(path))
             throw new Exception("File not found");

@@ -3,7 +3,7 @@ namespace Backend_Service.Domain.Entities;
 public class Segmentation
 {
     /// The id of the segmentation.
-    public Guid Id { get; set; }
+    public int Id { get; set; }
 
     /// The first x-coordinate of the segmentation.
     public required double FirstCoordinateX { get; set; }
@@ -18,11 +18,11 @@ public class Segmentation
     public required double SecondCoordinateY { get; set; }
 
     // Relations
-    public Guid LabelId { get; set; }
+    public int LabelId { get; set; }
 
     public required Label Label { get; set; }
 
-    public Guid ImageId { get; set; }
+    public int ImageId { get; set; }
 
     public required Image Image { get; set; }
 }

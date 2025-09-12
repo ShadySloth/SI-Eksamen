@@ -33,7 +33,7 @@ public class LabelController : ControllerBase
     /// <param name="labelId"></param>
     /// <returns></returns>
     [HttpGet("{labelId}")]
-    public async Task<ActionResult<LabelDto>> GetLabel(Guid labelId)
+    public async Task<ActionResult<LabelDto>> GetLabel(int labelId)
     {
         var label = await _labelService.GetLabel(labelId);
 
@@ -72,7 +72,7 @@ public class LabelController : ControllerBase
     /// <param name="labelId"></param>
     /// <returns></returns>
     [HttpDelete("{labelId}")]
-    public async Task<IActionResult> DeleteLabel(Guid labelId)
+    public async Task<IActionResult> DeleteLabel(int labelId)
     {
         await _labelService.DeleteLabel(labelId);
 

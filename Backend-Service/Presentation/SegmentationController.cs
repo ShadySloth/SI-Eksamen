@@ -16,28 +16,28 @@ public class SegmentationController : ControllerBase
     }
     
     [HttpGet("{segmentationId}")]
-    public async Task<ActionResult<SegmentationDto>> GetSegmentationById(Guid segmentationId)
+    public async Task<ActionResult<SegmentationDto>> GetSegmentationById(int segmentationId)
     {
         var segmentationDto = await _segmentationService.GetSegmentationById(segmentationId);
         return Ok(segmentationDto);
     }
 
     [HttpGet("imageandlabel")]
-    public async Task<ActionResult<SegmentationDto[]>> GetSegmentationByImageAndLabel([FromQuery]Guid imageId, [FromQuery]Guid labelId)
+    public async Task<ActionResult<SegmentationDto[]>> GetSegmentationByImageAndLabel([FromQuery]int imageId, [FromQuery]int labelId)
     {
         var segmentationDtos = await _segmentationService.GetSegmentationsByImageAndLabel(imageId, labelId);
         return Ok(segmentationDtos);
     }
     
     [HttpGet("byLabel/{labelId}")]
-    public async Task<ActionResult<SegmentationDto[]>> GetSegmentationsByLabel(Guid labelId)
+    public async Task<ActionResult<SegmentationDto[]>> GetSegmentationsByLabel(int labelId)
     {
         var segmentationDtos = await _segmentationService.GetSegmentationsByLabel(labelId);
         return Ok(segmentationDtos);
     }
 
     [HttpGet("byImage/{imageId}")]
-    public async Task<ActionResult<SegmentationDto[]>> GetSegmentationsByImage(Guid imageId)
+    public async Task<ActionResult<SegmentationDto[]>> GetSegmentationsByImage(int imageId)
     {
         var segmentationDtos = await _segmentationService.GetSegmentationsByImage(imageId);
         return Ok(segmentationDtos);
@@ -58,7 +58,7 @@ public class SegmentationController : ControllerBase
     }
     
     [HttpDelete("{segmentationId}")]
-    public async Task<IActionResult> DeleteSegmentation(Guid segmentationId)
+    public async Task<IActionResult> DeleteSegmentation(int segmentationId)
     {
         await _segmentationService.DeleteSegmentation(segmentationId);
         return NoContent();

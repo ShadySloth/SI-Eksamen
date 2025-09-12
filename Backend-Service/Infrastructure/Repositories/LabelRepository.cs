@@ -22,14 +22,14 @@ public class LabelRepository : ILabelRepository
         return labels;
     }
 
-    public async Task<Label> GetLabel(Guid labelId)
+    public async Task<Label> GetLabel(int labelId)
     {
         var label = await _context.Labels
             .FirstOrDefaultAsync(l => l.Id == labelId);
         return label!;
     }
 
-    public async Task<Label> GetLabelWithImages(Guid labelId)
+    public async Task<Label> GetLabelWithImages(int labelId)
     {
         var label = await _context.Labels
             .Where(l => l.Id == labelId)
@@ -83,7 +83,7 @@ public async Task<Label> UpdateLabel(Label label)
     return existingLabel;
 }
 
-    public async Task DeleteLabel(Guid labelId)
+    public async Task DeleteLabel(int labelId)
     {
         var label = await _context.Labels
             .FirstOrDefaultAsync(l => l.Id == labelId);

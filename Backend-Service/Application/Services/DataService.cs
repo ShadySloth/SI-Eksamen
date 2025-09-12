@@ -37,8 +37,8 @@ public class DataService : IDataService
         var labels = new List<LabelDto>();
         foreach (var label in dataSetDto.LabelsToBeUsed)
         {
-            images.AddRange(_imageService.GetImagesByLabel(label).Result); 
-            labels.Add(_labelService.GetLabel(label).Result);
+            images.AddRange(await _imageService.GetImagesByLabel(label));
+            labels.Add(await _labelService.GetLabel(label));
         }
 
         foreach (var (label, labelIndex) in labels.Select((l, i) => (l, i)))
@@ -85,14 +85,14 @@ public class DataService : IDataService
             Names = labels.Select(l => l.Name).ToArray()
         };
 
-        var yamlPath = $"../temp/datasets/{dataSetResult.DataSetName}/data.yaml";
+        var yamlPath = $"./temp/datasets/{dataSetResult.DataSetName}/data.yaml";
         await WriteYamlConfig(config, yamlPath);
         
         // Zip the dataset
-        ZipFile.CreateFromDirectory($"../temp/datasets/{dataSetResult.DataSetName}",
-            $"../blob/{dataSetResult.DataSetName}.zip");
+        //ZipFile.CreateFromDirectory($"./temp/datasets/{dataSetResult.DataSetName}",
+        //    $"../blob/{dataSetResult.DataSetName}.zip");
         
-        File.Delete("../temp");
+        //File.Delete("../temp");
 
         return dataSetResult;
     }
@@ -113,7 +113,7 @@ public class DataService : IDataService
         await File.WriteAllTextAsync(filePath, yaml);
     }
     
-    private async Task WriteSet(IEnumerable<IGrouping<Guid, (SegmentationDto segmentationDto, int labelIndex)>> groups,
+    private async Task WriteSet(IEnumerable<IGrouping<int, (SegmentationDto segmentationDto, int labelIndex)>> groups,
         string setName, string dataSetName)
     {
         foreach (var group in groups)
@@ -121,24 +121,27 @@ public class DataService : IDataService
             foreach (var (segment, labelIndex) in group)
             {
                 var fileName = $"{segment.ImageId}_{GenerateRandomString(32)}".Replace('.', '_');
-                var labelDir = $"../temp/datasets/{dataSetName}/{setName}/labels";
-                var imageDir = $"../temp/datasets/{dataSetName}/{setName}/images";
+                var labelDir = $"./temp/datasets/{dataSetName}/{setName}/labels";
+                var imageDir = $"./temp/datasets/{dataSetName}/{setName}/images";
                 if (!Directory.Exists(labelDir))
+                {
                     Directory.CreateDirectory(labelDir);
+                }
                 if (!Directory.Exists(imageDir))
+                {
                     Directory.CreateDirectory(imageDir);
+                }
 
                 var labelPath = Path.Combine(labelDir, $"{fileName}.txt");
                 var content = $"{labelIndex} " +
                               $"{segment.FirstCoordinateX} {segment.FirstCoordinateY} " +
                               $"{segment.SecondCoordinateX} {segment.SecondCoordinateY}";
                 await File.WriteAllTextAsync(labelPath, content);
-                
-                var image = await _imageService.GetImage(segment.ImageId);
+
+                var image = segment.Image!;
                 var extension = Path.GetExtension(image.FileName);
                 var imagePath = Path.Combine(imageDir, $"{fileName}{extension}");
-                var imageBytes = Convert.FromBase64String(image.FileBase64!);
-                await File.WriteAllBytesAsync(imagePath, imageBytes);
+                File.Copy(image.FileName, imagePath);
             }
         }
     }

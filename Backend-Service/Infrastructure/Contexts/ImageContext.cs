@@ -7,6 +7,7 @@ public class ImageContext : DbContext
 {
     public ImageContext(DbContextOptions<ImageContext> options) : base(options)
     {
+
     }
     
     public DbSet<Image> Images { get; set; }
@@ -18,11 +19,9 @@ public class ImageContext : DbContext
     {
         //Image
         modelBuilder.Entity<Image>()
-            .Property(i => i.FileName)
-            .HasMaxLength(50);
+            .Property(i => i.FileName);
         modelBuilder.Entity<Image>()
-            .HasIndex(i => i.FileName)
-            .IsUnique();
+            .HasIndex(i => i.FileName);
         
         //Label
         modelBuilder.Entity<Label>()
@@ -47,7 +46,6 @@ public class ImageContext : DbContext
             .Property(d => d.DataSetName)
             .HasMaxLength(50);
         modelBuilder.Entity<DataSet>()
-            .HasIndex(d => d.DataSetName)
-            .IsUnique();
+            .HasIndex(d => d.DataSetName);
     }
 }

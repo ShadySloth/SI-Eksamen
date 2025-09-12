@@ -3,6 +3,7 @@ using Backend_Service.Domain.Entities;
 using Backend_Service.Infrastructure.Contexts;
 using Backend_Service.Infrastructure.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 
 namespace Backend_Service.Infrastructure.Repositories;
 
@@ -15,7 +16,7 @@ public class ImageRepository : IImageRepository
         _context = context;
     }
 
-    public Task<Image> GetImage(Guid imageId)
+    public Task<Image> GetImage(int imageId)
     {
         var image = _context.Images
             .Select(i => i)
@@ -47,12 +48,16 @@ public class ImageRepository : IImageRepository
         return pagedResult;
     }
 
-    public async Task<Image[]> GetImagesByLabel(Guid labelId)
+    public async Task<Image[]> GetImagesByLabel(int labelId)
     {
         var images = await _context.Images
-            .Where(i => i.Labels.Any(l => l.Id ==labelId))
+            .FromSqlRaw(@"
+            SELECT DISTINCT i.*
+            FROM ""Images"" i
+            INNER JOIN ""Segmentations"" s ON i.""Id"" = s.""ImageId""
+            WHERE s.""LabelId"" = {0}", labelId)
             .ToArrayAsync();
-        
+
         return images;
     }
 

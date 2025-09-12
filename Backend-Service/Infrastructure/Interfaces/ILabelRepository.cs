@@ -16,14 +16,14 @@ public interface ILabelRepository
     /// </summary>
     /// <param name="labelId"></param>
     /// <returns></returns>
-    public Task<Label> GetLabel(Guid labelId);
+    public Task<Label> GetLabel(int labelId);
     
     /// <summary>
     /// Gets a label with images by id.
     /// </summary>
     /// <param name="labelId"></param>
     /// <returns></returns>
-    public Task<Label> GetLabelWithImages(Guid labelId);
+    public Task<Label> GetLabelWithImages(int labelId);
     
     /// <summary>
     /// Creates a new label.
@@ -44,5 +44,5 @@ public interface ILabelRepository
     /// </summary>
     /// <param name="labelId"></param>
     /// <returns></returns>
-    public Task DeleteLabel(Guid labelId);
+    public Task DeleteLabel(int labelId);
 }

@@ -8,5 +8,5 @@ public class CreateDataSetDto
     public required DataSetDto DataSet { get; set; }
     
     /// The labels to be used in the dataset.
-    public Guid[] LabelsToBeUsed { get; set; } = [];
+    public int[] LabelsToBeUsed { get; set; } = [];
 }
